@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parlons: French for Kreyòl speakers</title>
+<meta name="theme-color" content="#17224D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Parlons">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#17224D;--ink2:#2B3A78;--paper:#F2F5F3;--card:#fff;--saffron:#F0AC1B;--palm:#17795A;--clay:#C4432B;--line:#D3DAD6;--mute:#56627F;--soft:#E8EEF0}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Figtree,system-ui,sans-serif}
+h1,h2,h3,h4{font-family:'Bricolage Grotesque',Figtree,system-ui,sans-serif;line-height:1.15;margin:0 0 .5em;font-weight:700}
+h1{font-size:1.5rem}h2{font-size:1.4rem}h3{font-size:1.1rem}h4{font-size:1rem}
+p{margin:.4em 0 .8em}
+a{color:var(--ink2)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
+#app{min-height:100vh;display:flex;flex-direction:column}
+.top{background:var(--ink);color:#fff;padding:14px 18px 22px;position:relative}
+.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:8px;background:repeating-linear-gradient(90deg,var(--saffron) 0 14px,var(--ink) 14px 20px,var(--palm) 20px 34px,var(--ink) 34px 40px)}
+.top h1{margin:0;font-size:1.35rem}
+.top small{color:#C9D1F0;display:block}
+main{flex:1;padding:16px 16px 96px;max-width:860px;width:100%;margin:0 auto}
+nav{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(7,1fr);background:#fff;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav button{background:none;border:0;padding:14px 0;font-size:.74rem;font-weight:600;color:var(--mute);cursor:pointer;border-top:3px solid transparent}
+nav button[aria-current=page]{color:var(--ink);border-top-color:var(--saffron)}
+@media(min-width:900px){
+ #app{display:grid;grid-template-columns:170px 1fr;grid-template-rows:auto 1fr}
+ .top{grid-column:1/3}
+ nav{position:static;grid-column:1;grid-row:2;display:flex;flex-direction:column;border-top:0;border-right:1px solid var(--line);padding:12px 0;gap:2px}
+ nav button{text-align:left;padding:12px 20px;border-top:0;border-left:4px solid transparent;font-size:1rem}
+ nav button[aria-current=page]{border-left-color:var(--saffron)}
+ main{grid-column:2;grid-row:2;padding-bottom:40px}
+}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px}
+.card.flat{background:var(--soft);border-color:transparent}
+.card.lead{border-left:6px solid var(--saffron)}
+.muted{color:var(--mute)}.small{font-size:.88rem}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row.sb{justify-content:space-between}
+.grow{flex:1;min-width:0}
+.btn{background:var(--ink);color:#fff;border:2px solid var(--ink);border-radius:10px;padding:10px 16px;font-weight:600;cursor:pointer;min-height:44px}
+.btn.alt{background:transparent;color:var(--ink)}
+.btn.good{background:var(--palm);border-color:var(--palm)}
+.btn.bad{background:var(--clay);border-color:var(--clay)}
+.btn.sm{padding:6px 12px;min-height:36px;font-size:.9rem}
+.btn:disabled{opacity:.45;cursor:default}
+.spk{background:var(--saffron);border:0;border-radius:50%;width:38px;height:38px;flex:none;cursor:pointer;font-size:1rem;color:var(--ink)}
+.spk::before{content:"\25B6"}
+.sp2{display:flex;gap:6px;flex:none}
+.spk.slow{background:var(--soft);font-weight:700;font-size:.85rem}
+.spk.slow::before{content:"\00BD"}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:500}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip.done{border-color:var(--palm)}
+.big{font:700 2.6rem/1.1 'Bricolage Grotesque',Figtree,sans-serif;margin:.1em 0}
+.bar{height:10px;background:var(--soft);border-radius:6px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--palm)}
+.task{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.task:last-child{border:0}
+.task input{width:24px;height:24px;margin-top:2px;accent-color:var(--palm)}
+.kr{display:inline-block;background:#FFF3D1;border-radius:6px;padding:1px 8px;font-size:.9rem}
+.ex{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.ex:last-child{border:0}
+ul.tight{padding-left:1.2em;margin:.3em 0}ul.tight li{margin:.3em 0}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+td,th{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--mute)}
+input[type=text],input[type=number],input[type=date],select,textarea{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;font-size:1rem}
+.fb{padding:10px 12px;border-radius:10px;margin:10px 0}
+.fb.ok{background:#DDF1E8}.fb.no{background:#F9E0DA}.fb.mid{background:#FFF0C9}
+.rate{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.opt{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;margin:8px 0;cursor:pointer}
+.opt.ok{background:#DDF1E8;border-color:var(--palm)}.opt.no{background:#F9E0DA;border-color:var(--clay)}
+details{margin:8px 0}summary{cursor:pointer;font-weight:600;padding:6px 0}
+.line{display:flex;gap:10px;align-items:flex-start;padding:8px 0}
+.who{font-weight:600;min-width:64px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9;max-width:90vw}
+#toast.on{opacity:1}
+label.ck{display:flex;gap:10px;align-items:flex-start;padding:7px 0}
+label.ck input{width:22px;height:22px;accent-color:var(--palm);flex:none}
+.recdot{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--clay);margin-right:6px}
+@media(prefers-reduced-motion:no-preference){.recdot.on{animation:pulse 1s infinite}@keyframes pulse{50%{opacity:.25}}}
+
+/* iPhone 11 and small-screen usability enhancements */
+html,body{max-width:100%;overflow-x:hidden}
+#app,main,.card{min-width:0}
+.card,table,pre{overflow-wrap:anywhere}
+.card{overflow-x:auto}
+button,select,input,textarea{touch-action:manipulation}
+nav button{min-height:54px}
+@media(max-width:899px){
+ .top{padding:calc(14px + env(safe-area-inset-top,0px)) 16px 20px}
+ main{padding:14px 12px calc(100px + env(safe-area-inset-bottom,0px))}
+ nav{display:flex;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none;justify-content:space-between}
+ nav::-webkit-scrollbar{display:none}
+ nav button{flex:1 0 auto;min-width:calc(100% / 7);padding:12px 5px;font-size:clamp(.65rem,2.6vw,.78rem);white-space:nowrap}
+ .card{padding:14px 12px}
+ .big{font-size:clamp(1.8rem,8vw,2.6rem)}
+ .row{gap:8px}
+ .rate{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .spk{width:44px;height:44px}
+ .btn.sm{min-height:44px}
+ table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+ input[type=text],input[type=number],input[type=date],select,textarea{font-size:16px}
+ audio{max-width:100%}
+}
+@media(max-width:375px){nav button{min-width:63px;font-size:.7rem}nav{justify-content:flex-start}}
+
+.global-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}.global-french table{width:100%;min-width:460px;border-collapse:collapse}.global-french th,.global-french td{text-align:left;vertical-align:top;padding:9px;border-bottom:1px solid var(--line);font-size:.9rem}.global-french td:first-child{min-width:135px}.global-french td:nth-child(2){min-width:180px}.global-french .row{flex-wrap:nowrap;align-items:center}.global-french .row button{flex-shrink:0}
+</style>
+</head>
+<body>
+<div id="app"><p style="padding:20px">Loading…</p></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript>This app needs JavaScript.</noscript>
+<script>
+/* =====================================================================
+   PARLONS: a French learning tool for Haitian Kreyòl speakers
+   Single file. All content lives in the data section below, so you can
+   edit or extend it (VOCAB, LESSONS, DIALOGUES, CLOZE...).
+   Progress is saved in this browser (localStorage).
+   ===================================================================== */
+
+/* ------------------------- DATA: VOCABULARY ------------------------- */
+// Each entry: [French, English, optional Kreyòl hint]. Nouns carry their article.
+// l'+noun gets (m) or (f) so the gender drill can use it.
+const VOCAB = {
+1:[["bonjour","hello / good day","bonjou"],["bonsoir","good evening","bonswa"],["salut","hi / bye (casual)"],["au revoir","goodbye"],["à demain","see you tomorrow"],["à bientôt","see you soon"],["merci","thank you","mèsi"],["s'il vous plaît","please (formal)","souple"],["s'il te plaît","please (informal)"],["de rien","you're welcome"],["pardon","sorry / excuse me","padon"],["oui","yes","wi"],["non","no","non"],["ça va ?","how's it going?"],["je m'appelle…","my name is…"],["enchanté(e)","nice to meet you"],["je ne comprends pas","I don't understand"],["plus lentement, s'il vous plaît","more slowly, please"],["répétez, s'il vous plaît","please repeat"],["je ne sais pas","I don't know"],["très bien","very well"],["un homme","a man","nonm"],["une femme","a woman","fanm"],["un ami","a friend (m)","zanmi"],["une amie","a friend (f)","zanmi"]],
+2:[["un, deux, trois","one, two, three"],["quatre, cinq, six","four, five, six"],["sept, huit, neuf, dix","seven, eight, nine, ten"],["vingt","twenty"],["cent","one hundred"],["mille","one thousand"],["la famille","family","fanmi"],["la mère","mother"],["le père","father"],["le frère","brother","frè"],["la sœur","sister","sè"],["le fils","son"],["la fille","daughter / girl","fi"],["le mari","husband"],["l'enfant (m/f)","child"],["grand / grande","tall / big"],["petit / petite","small","pitit (child)"],["content / contente","happy","kontan"],["fatigué / fatiguée","tired"],["jeune","young"],["vieux / vieille","old"],["beau / belle","beautiful"],["le nom","name"],["j'ai … ans","I am … years old"],["je suis de…","I'm from…"]],
+3:[["l'eau (f)","water","dlo"],["le pain","bread","pen"],["le riz","rice","diri"],["le poisson","fish","pwason"],["le poulet","chicken"],["la viande","meat","vyann"],["le fruit","fruit","fwi"],["la banane","banana","bannann"],["la mangue","mango","mango"],["le légume","vegetable","legim"],["le café","coffee","kafe"],["le lait","milk","lèt"],["le jus","juice","ji"],["le marché","market","mache"],["l'argent (m)","money","lajan"],["cher / chère","expensive","chè"],["combien ça coûte ?","how much is it?"],["manger","to eat","manje"],["boire","to drink","bwè"],["acheter","to buy","achte"],["j'ai faim","I'm hungry"],["j'ai soif","I'm thirsty"],["l'addition (f)","the bill"],["le plat","dish / plate"],["la cuisine","cooking / kitchen","kizin"]],
+4:[["la maison","house / home"],["la ville","city / town","vil"],["la rue","street","lari"],["l'école (f)","school","lekòl"],["le travail","work","travay"],["le bureau","office","biwo"],["l'hôpital (m)","hospital","lopital"],["la gare","train station"],["l'aéroport (m)","airport","ayewopò"],["le taxi","taxi","tasi"],["le bus","bus"],["aller","to go","ale"],["venir","to come","vini"],["prendre","to take","pran"],["où","where"],["quand","when"],["pourquoi","why"],["comment","how"],["qui","who"],["quoi","what"],["à gauche","on the left","agoch"],["à droite","on the right","adwat"],["tout droit","straight ahead"],["près de","near"],["loin de","far from"]],
+5:[["aujourd'hui","today"],["demain","tomorrow","demen"],["hier","yesterday","yè"],["maintenant","now"],["le matin","morning","maten"],["le soir","evening","aswè"],["la nuit","night","nwit"],["la semaine","week","semèn"],["le mois","month","mwa"],["l'année (f)","year","ane"],["lundi, mardi, mercredi","Monday, Tuesday, Wednesday","lendi, madi, mèkredi"],["jeudi, vendredi","Thursday, Friday","jedi, vandredi"],["samedi, dimanche","Saturday, Sunday","samdi, dimanch"],["l'heure (f)","hour / time"],["il est quelle heure ?","what time is it?"],["se réveiller","to wake up"],["se lever","to get up","leve"],["dormir","to sleep","dòmi"],["travailler","to work","travay"],["parler","to speak","pale"],["finir","to finish","fini"],["déjà","already"],["pas encore","not yet"],["souvent","often"],["toujours","always","toujou"],["jamais","never"],["parfois","sometimes"],["tôt","early"],["tard","late"]],
+6:[["vouloir","to want","vle"],["pouvoir","to be able to / can","kapab"],["devoir","to have to / must","dwe"],["savoir","to know (a fact / a skill)","konnen"],["connaître","to know (a person / place)","konnen"],["voir","to see","wè"],["dire","to say","di"],["donner","to give","bay"],["trouver","to find","jwenn"],["penser","to think","panse"],["aimer","to like / love","renmen"],["aider","to help","ede"],["attendre","to wait","tann"],["chercher","to look for","chache"],["commencer","to begin","kòmanse"],["comprendre","to understand","konprann"],["appeler","to call","rele"],["habiter","to live (reside)","rete"],["demander","to ask","mande"],["répondre","to answer","reponn"]],
+7:[["le corps","body","kò"],["la tête","head","tèt"],["la main","hand","men"],["le pied","foot","pye"],["le ventre","stomach","vant"],["le cœur","heart","kè"],["le médecin","doctor","doktè"],["la pharmacie","pharmacy","famasi"],["la fièvre","fever","lafyèv"],["la douleur","pain","doulè"],["j'ai mal à…","my … hurts"],["malade","sick","malad"],["la santé","health","sante"],["le besoin","need","bezwen"],["avoir besoin de","to need"],["la peur","fear","laperèz"],["la joie","joy","lajwa"],["triste","sad","tris"],["en colère","angry"],["inquiet / inquiète","worried"]],
+8:[["quand j'étais petit","when I was little"],["avant","before","avan"],["après","after","apre"],["pendant","during","pandan"],["parce que","because","paske"],["mais","but","men"],["alors","so / then","alò"],["donc","therefore"],["puis","then"],["ensuite","next"],["d'abord","first"],["enfin","finally"],["car","because (written)"],["pourtant","yet / however"],["cependant","however"],["l'histoire (f)","story / history","istwa"],["le souvenir","memory"],["raconter","to tell (a story)"],["se souvenir de","to remember"],["oublier","to forget","bliye"]],
+9:[["le métier","trade / profession"],["l'entreprise (f)","company"],["le patron","boss","patwon"],["le collègue","colleague"],["le projet","project"],["la réunion","meeting"],["l'avis (m)","opinion"],["à mon avis","in my opinion"],["je pense que","I think that"],["je suis d'accord","I agree"],["je ne suis pas d'accord","I disagree"],["ça dépend","it depends"],["c'est vrai","it's true"],["c'est important","it's important"],["c'est difficile","it's hard"],["la vie","life","lavi"],["le monde","world / people","mond"],["la politique","politics","politik"],["l'économie (f)","economy"],["la langue","language","lang"]],
+10:[["le voyage","trip","vwayaj"],["le billet","ticket","biyè"],["la valise","suitcase","valiz"],["l'hôtel (m)","hotel","otèl"],["la chambre","room","chanm"],["réserver","to book"],["voyager","to travel","vwayaje"],["partir","to leave","pati"],["arriver","to arrive","rive"],["rester","to stay","rete"],["je voudrais","I would like"],["pourriez-vous… ?","could you… ?"],["le pays","country","peyi"],["la frontière","border","fwontyè"],["le passeport","passport","paspò"],["l'avion (m)","plane","avyon"],["la route","road","wout"],["la plage","beach","plaj"],["la chaleur","heat","chalè"],["la pluie","rain","lapli"]],
+11:[["quoi de neuf ?","what's new?"],["ça fait longtemps","it's been a while"],["tu m'as manqué","I missed you"],["bon courage","good luck / hang in there","bon kouraj"],["félicitations","congratulations"],["bienvenue","welcome"],["bon appétit","enjoy your meal"],["sans problème","no problem"],["pas de souci","no worries"],["c'est dommage","that's a shame"],["tant mieux","so much the better"],["tant pis","too bad"],["j'ai l'impression que","I have the feeling that"],["en fait","actually"],["bref","in short"],["d'ailleurs","by the way"],["en tout cas","in any case"],["vraiment","really","vrèman"],["carrément","totally"],["du coup","so / as a result"]]
+};
+const VOCAB_PLUS={
+1:[["monsieur","Mr / sir"],["madame","Mrs / ma'am"],["excusez-moi","excuse me (formal)"],["d'accord","okay / agreed"],["peut-être","maybe"],["bien sûr","of course"],["comment allez-vous ?","how are you? (formal)"],["bonne journée","have a good day"],["bonne nuit","good night"],["bonne chance","good luck"],["à tout à l'heure","see you later"]],
+2:[["le chien","dog","chen"],["le chat","cat","chat"],["le garçon","boy","gason"],["la grand-mère","grandmother"],["le grand-père","grandfather"],["l'oncle (m)","uncle","tonton"],["la tante","aunt","tant"],["le cousin","cousin (m)"],["gentil / gentille","kind"],["rouge","red","wouj"],["bleu / bleue","blue","ble"],["vert / verte","green","vèt"]],
+3:[["le sel","salt","sèl"],["le sucre","sugar","sik"],["l'huile (f)","oil","lwil"],["l'œuf (m)","egg","ze"],["le fromage","cheese","fwomaj"],["la tomate","tomato","tomat"],["l'oignon (m)","onion","zonyon"],["la bière","beer","byè"],["le petit-déjeuner","breakfast"],["le déjeuner","lunch"],["le dîner","dinner"],["frais / fraîche","fresh","fre"],["bon / bonne","good","bon"]],
+4:[["la voiture","car","machin"],["le train","train"],["le village","village"],["la mer","sea","lanmè"],["la montagne","mountain","mòn"],["le magasin","shop","magazen"],["la banque","bank","labank"],["le quartier","neighbourhood"],["tourner","to turn","vire"],["à pied","on foot"],["ici","here","isit"],["là-bas","over there"]],
+5:[["la journée","day (the whole day)"],["le jour","day","jou"],["le week-end","weekend"],["midi","noon"],["minuit","midnight"],["hier soir","last night"],["ce matin","this morning"],["la semaine dernière","last week"],["il y a deux jours","two days ago"],["sortir","to go out","soti"],["rentrer","to go home / come back","antre"],["se coucher","to go to bed"],["se laver","to wash oneself","lave"],["se reposer","to rest","repoze"]],
+6:[["écrire","to write","ekri"],["lire","to read","li"],["écouter","to listen","koute"],["regarder","to watch / look at","gade"],["entendre","to hear","tande"],["apprendre","to learn","aprann"],["étudier","to study","etidye"],["essayer","to try","eseye"],["utiliser","to use","itilize"],["choisir","to choose","chwazi"],["ouvrir","to open","ouvri"],["fermer","to close","fèmen"],["recevoir","to receive","resevwa"]],
+7:[["la jambe","leg","janm"],["le bras","arm","bra"],["l'œil (m)","eye","je"],["les yeux","eyes","je"],["la bouche","mouth","bouch"],["le dos","back","do"],["la gorge","throat","gòj"],["le médicament","medicine"],["le repos","rest","repo"],["avoir chaud","to be hot","cho"],["avoir froid","to be cold","frèt"],["la dent","tooth","dan"]],
+8:[["l'enfance (f)","childhood"],["autrefois","in the past"],["tous les jours","every day"],["un jour","one day"],["soudain","suddenly"],["pendant que","while"],["jouer","to play","jwe"],["le jeu","game","jwèt"],["le conte","tale / folk story","kont"],["lorsque","when (written)"],["puisque","since / because"]],
+9:[["le salaire","salary","salè"],["gagner","to earn / win","genyen"],["l'emploi (m)","job"],["la société","society / company","sosyete"],["la loi","law","lwa"],["le gouvernement","government","gouvènman"],["l'éducation (f)","education","edikasyon"],["la jeunesse","youth","jèn"],["le problème","problem","pwoblèm"],["la solution","solution","solisyon"],["sévère","strict","sevè"],["selon moi","in my view"],["je trouve que","I find that"]],
+10:[["le séjour","stay"],["la réservation","booking"],["la clé","key","kle"],["visiter","to visit","vizite"],["découvrir","to discover","dekouvri"],["l'été (m)","summer","ete"],["l'hiver (m)","winter","livè"],["la saison","season","sezon"],["le soleil","sun","solèy"],["le vent","wind","van"],["la carte","map / card","kat"],["prochain / prochaine","next"],["la semaine prochaine","next week"]],
+11:[["tout à fait","exactly / absolutely"],["justement","precisely"],["voilà","there you go / that's it"],["ça veut dire","it means"],["comment dit-on… ?","how do you say… ?"],["je veux dire","I mean"],["tu peux répéter ?","can you repeat?"],["franchement","honestly"],["finalement","in the end"],["presque","almost"],["encore","again / still"],["heureusement","fortunately"],["malheureusement","unfortunately"]]
+};
+Object.keys(VOCAB_PLUS).forEach(w=>VOCAB[w].push(...VOCAB_PLUS[w]));
+const ALL=[];
+Object.keys(VOCAB).forEach(w=>VOCAB[w].forEach((v,i)=>ALL.push({id:`w${w}-${i}`,w:+w,fr:v[0],en:v[1],kr:v[2]||""})));
+
+/* ------------------------- DATA: LESSONS ---------------------------- */
+const LESSONS=[
+{t:"Sounds and survival",goal:"Read French aloud accurately, introduce yourself, use être.",
+ bridge:"Kreyòl already gives you nasal vowels (an, on, en) and the oi sound (moi, toi). New for you: u, eu, the French r, silent final letters, liaison. Kreyòl « mwen se… » becomes « je suis… ».",
+ points:["Spelling to sound is regular once you know the rules. Most final consonants are silent (petit, grand, ils parlent).","tu = friend or peer; vous = elder, stranger, shop, or plural. Use vous generously with elders.","être: je suis, tu es, il/elle est, nous sommes, vous êtes, ils/elles sont.","In speech, make a question by raising your voice: Tu es haïtien ? Ça va ?","Spend 5 minutes a day in Library > Sounds for the first three weeks."],
+ ex:[["Je suis haïtien.","I am Haitian (m)."],["Tu es de quelle ville ?","Which city are you from?"],["Nous sommes amis.","We are friends."],["Elle est ivoirienne.","She is Ivorian."],["Vous êtes professeur ?","Are you a teacher?"]],
+ listen:"RFI Journal en français facile (first 5 minutes, twice). Watch 10 minutes of a series with French subtitles on.",
+ check:"You can say who you are, where you're from, and ask the same, without reading."},
+{t:"Gender, articles and avoir",goal:"Use le/la/un/une correctly, describe people, count to 100, use avoir.",
+ bridge:"Kreyòl puts the article after the noun (liv la). French puts it before (le livre). Many Kreyòl nouns froze a French article inside: lekòl (l'école), lajan (l'argent), dlo (de l'eau), diri (du riz). Use these as memory hooks.",
+ points:["Every noun is masculine or feminine. Always learn the article with the noun.","le/la/l'/les = the. un/une/des = a, some.","Adjectives agree: grand/grande, petit/petite. The feminine makes the final consonant audible.","avoir: j'ai, tu as, il a, nous avons, vous avez, ils ont. Il y a = there is/are (Kreyòl gen).","Tendencies: -tion, -té, -ure, -ette = feminine. -age, -ment, -eau = masculine.","Numbers 0 to 100."],
+ ex:[["J'ai deux frères et une sœur.","I have two brothers and a sister."],["La femme est grande.","The woman is tall."],["Il y a un problème.","There is a problem."],["C'est une belle maison.","It's a beautiful house."],["Elle a trente ans.","She is thirty."]],
+ listen:"RFI JEF again. Pick one story and listen three times: gist, details, transcript.",
+ check:"You can describe your family and a friend in 6 or more sentences."},
+{t:"-er verbs, food and the market",goal:"Conjugate regular -er verbs, ask for food, handle prices.",
+ bridge:"Kreyòl verbs never change: mwen manje, li manje, nou manje. French adds endings, but in speech je/tu/il/ils sound the same, so you only have to hear and say nous/vous differently.",
+ points:["-er endings: e, es, e, ons, ez, ent.","Partitive (some): du, de la, de l', des. After a negative: pas de. Je ne mange pas de viande.","Polite request: Je voudrais… / Je prends… / Vous avez… ?","Numbers 20 to 100: vingt, trente, quarante, cinquante, soixante, soixante-dix, quatre-vingts, quatre-vingt-dix.","Bargaining: Vous pouvez faire un prix ?"],
+ ex:[["Je mange du riz.","I eat (some) rice."],["Nous achetons du poisson.","We buy fish."],["Je voudrais de l'eau, s'il vous plaît.","I'd like some water, please."],["Je ne mange pas de viande.","I don't eat meat."],["C'est un peu cher.","It's a bit expensive."]],
+ listen:"Look for market and cooking videos from Abidjan, Dakar or Port-au-Prince with French subtitles.",
+ check:"You can complete a market purchase in French, including a price negotiation."},
+{t:"Going places: aller, questions, directions",goal:"Use aller, the near future, question words, and prepositions.",
+ bridge:"Kreyòl « m pral manje » is French « je vais manger » (aller + infinitive). Kreyòl « pa » before the verb becomes « ne…pas » around it, but in speech the ne often drops: je sais pas.",
+ points:["aller: je vais, tu vas, il va, nous allons, vous allez, ils vont.","Futur proche: aller + infinitive. Je vais partir demain.","Also venir (je viens) and prendre (je prends).","Questions: Tu habites où ? / Où est-ce que tu habites ? / Où habites-tu ? (formal)","à + le = au, à + les = aux, de + le = du, de + les = des.","Directions: tout droit, à gauche, à droite, près de, loin de."],
+ ex:[["Je vais au marché.","I'm going to the market."],["Nous allons manger à la maison.","We're going to eat at home."],["Où est la gare, s'il vous plaît ?","Where is the station, please?"],["Tu prends le bus ?","Are you taking the bus?"],["Je ne sais pas.","I don't know."]],
+ listen:"Start two tutor sessions a week (30 min, topic: your day, your city, directions).",
+ check:"You can ask and follow directions and say what you're going to do this weekend."},
+{t:"The past: passé composé",goal:"Talk about what happened, with avoir and être.",
+ bridge:"Kreyòl « mwen te manje » = « j'ai mangé ». « Li te ale » = « il est allé ». Careful: Kreyòl « te » also covers habits and backgrounds in the past. French splits that job (passé composé vs imparfait, next lesson set).",
+ points:["Passé composé = avoir (or être) + past participle.","Participles: -er → é, -ir → i, -re → u. Irregular: fait, pris, eu, été, vu, dit, bu.","être verbs: aller, venir, arriver, partir, rester, naître, mourir, and reflexives. The participle agrees: elle est allée.","Negative wraps the auxiliary: Je n'ai pas mangé.","Time words: hier, ce matin, la semaine dernière, il y a deux jours."],
+ ex:[["Hier, j'ai mangé du poisson.","Yesterday I ate fish."],["Elle est arrivée à midi.","She arrived at noon."],["Nous sommes allés au marché.","We went to the market."],["Tu as vu ce film ?","Did you see that film?"],["Je n'ai pas fini.","I haven't finished."]],
+ listen:"Podcast: InnerFrench (France, intermediate) once a week; use the transcript.",
+ check:"You can narrate yesterday in 8 or more sentences."},
+{t:"Modals, reflexives and politeness",goal:"Express wants, abilities, duties; use reflexive verbs.",
+ bridge:"Kreyòl vle / kapab / dwe map to vouloir / pouvoir / devoir. Careful: Kreyòl « konnen » covers two French verbs: savoir (facts, skills) and connaître (people, places).",
+ points:["Modal + infinitive: Je veux partir. Tu peux venir ? Il doit travailler.","vouloir: veux, veux, veut, voulons, voulez, veulent. pouvoir: peux, peux, peut, pouvons, pouvez, peuvent.","savoir: Je sais nager. connaître: Je connais Marie.","Reflexive verbs: je me lève, tu te lèves, il se lève, nous nous levons.","Il faut + infinitive = one must. Il faut manger."],
+ ex:[["Je veux apprendre le français.","I want to learn French."],["Tu peux venir demain ?","Can you come tomorrow?"],["Je sais cuisiner.","I know how to cook."],["Je connais ta sœur.","I know your sister."],["Je me lève à six heures.","I get up at six."]],
+ listen:"Watch one episode of a West African series (e.g. Maîtresse d'un homme marié) with French subtitles.",
+ check:"You can invite someone, accept or decline politely, and explain why."},
+{t:"Body, health, comparisons and possessives",goal:"Describe how you feel, compare, say whose things are whose.",
+ bridge:"Kreyòl puts the owner after: « manman m ». French puts it before: « ma mère ». Feelings use avoir in French: j'ai faim, j'ai peur, j'ai chaud.",
+ points:["mon/ma/mes, ton/ta/tes, son/sa/ses. Before a vowel use mon: mon amie.","J'ai mal à la tête / au ventre / aux pieds.","depuis + present: Je suis malade depuis hier.","Comparatives: plus … que, moins … que, aussi … que.","avoir + faim, soif, peur, chaud, froid, besoin de."],
+ ex:[["J'ai mal à la tête.","I have a headache."],["Ma mère est plus âgée que mon père.","My mother is older than my father."],["Il a peur de l'avion.","He's afraid of planes."],["Je suis fatigué depuis lundi.","I've been tired since Monday."],["Nous avons besoin d'aide.","We need help."]],
+ listen:"Listen to health or weather segments on RFI Afrique or TV5MONDE Afrique.",
+ check:"You can explain symptoms at a pharmacy and compare two people."},
+{t:"Storytelling: imparfait and connectors",goal:"Tell stories with background and events.",
+ bridge:"Kreyòl « m te konn jwe » = « je jouais » (habit). « M t ap manje » = « je mangeais » (in progress). French: imparfait for scene, habit, description; passé composé for events: « Je mangeais quand il est arrivé. »",
+ points:["Imparfait: take the nous form of the present, drop -ons, add -ais, -ais, -ait, -ions, -iez, -aient.","être is irregular: étais, étais, était, étions, étiez, étaient.","Use imparfait for: habits (tous les jours), descriptions, what was going on.","Connectors: d'abord, ensuite, puis, alors, mais, pourtant, enfin, parce que, donc."],
+ ex:[["Quand j'étais petit, j'habitais à Jacmel.","When I was little, I lived in Jacmel."],["Nous allions au marché le samedi.","We used to go to the market on Saturdays."],["Il pleuvait quand je suis sorti.","It was raining when I left."],["Ma grand-mère racontait des histoires.","My grandmother told stories."],["D'abord, j'ai mangé. Ensuite, je suis parti.","First I ate. Then I left."]],
+ listen:"Tell a story three times: record, listen, re-record with fixes. Keep the first recording.",
+ check:"You can tell a 2-minute childhood story with background and events."},
+{t:"Pronouns and opinions",goal:"Replace nouns with le, la, les, lui, leur, y, en; give opinions.",
+ bridge:"Kreyòl puts the pronoun after the verb: « mwen wè l » (I see him). French puts it before: « je le vois ». Expect to fix « je vois le » for a while.",
+ points:["le/la/les = direct object. lui/leur = to him/her/them (people).","y = there / to it. en = of it / some.","Placement: before the conjugated verb: Je le vois. With passé composé: Je l'ai vu. With an infinitive: Je vais le voir.","Opinions: Je pense que… / À mon avis… / Je trouve que… / Je suis d'accord."],
+ ex:[["Je les vois tous les jours.","I see them every day."],["Je lui ai parlé hier.","I spoke to him/her yesterday."],["Tu y vas demain ?","Are you going there tomorrow?"],["J'en veux deux.","I want two (of them)."],["À mon avis, c'est une bonne idée.","In my opinion, it's a good idea."]],
+ listen:"Short debates or interviews on TV5MONDE; note opinion phrases you hear.",
+ check:"You can give and defend an opinion for 2 minutes using at least three pronouns."},
+{t:"Travel, future and polite requests",goal:"Plan trips, make bookings, speak about the future.",
+ bridge:"Kreyòl « m ap / m va / pral » → future. Kreyòl « ta » (conditional) → French -rais: je voudrais, tu pourrais.",
+ points:["Futur simple: infinitive + ai, as, a, ons, ez, ont. Je parlerai.","Irregular stems: ir- (aller), ser-, aur-, fer-, pourr-, voudr-, ver-, viendr-.","Politeness: Je voudrais… / J'aimerais… / Pourriez-vous… ?","si + present, future: S'il pleut, je resterai à la maison."],
+ ex:[["Demain, je serai au bureau.","Tomorrow I'll be at the office."],["Nous partirons samedi.","We'll leave on Saturday."],["Je voudrais réserver une chambre.","I'd like to book a room."],["Pourriez-vous m'aider ?","Could you help me?"],["S'il pleut, nous resterons ici.","If it rains, we'll stay here."]],
+ listen:"Listen to travel reports; role-play booking calls with your tutor.",
+ check:"You can book a room and explain your travel plans without notes."},
+{t:"Consolidation and real conversation",goal:"Hold a 15-minute conversation, repair breakdowns, sound natural.",
+ bridge:"No new grammar. Focus on fluency, fillers, and repairing conversation when you get stuck.",
+ points:["Fillers: euh, ben, alors, du coup, en fait, bref.","Repair phrases: Comment dit-on… ? / Ça veut dire quoi ? / Tu peux répéter ? / Je veux dire…","qui = subject (la femme qui habite ici). que = object (le film que j'ai vu).","Chunk: Il faut que + subjunctive (Il faut que je parte)."],
+ ex:[["Comment dit-on « kounye a » en français ?","How do you say « kounye a » in French?"],["Je veux dire que c'est difficile.","I mean that it's hard."],["C'est la femme qui habite ici.","It's the woman who lives here."],["Il faut que je parte.","I have to go."],["En fait, j'ai changé d'avis.","Actually, I changed my mind."]],
+ listen:"Record a 3-minute monologue and compare with your week 1 recording. Then a 15-minute tutor conversation.",
+ check:"You can talk about your life, plans and opinions for 15 minutes with only occasional help."}
+];
+
+/* ------------------------- DATA: DIALOGUES -------------------------- */
+// lines: [speaker 0 or 1, French, English]
+const DIALOGUES=[
+{t:"First meeting",w:1,who:["Marie","Jean"],lines:[[0,"Bonjour ! Je m'appelle Marie. Et vous ?","Hello! My name is Marie. And you?"],[1,"Bonjour Marie. Je m'appelle Jean. Enchanté !","Hello Marie. I'm Jean. Nice to meet you!"],[0,"Enchantée. Vous êtes d'où ?","Nice to meet you. Where are you from?"],[1,"Je suis haïtien. Et vous ?","I'm Haitian. And you?"],[0,"Moi, je suis ivoirienne. Je suis d'Abidjan.","I'm Ivorian. I'm from Abidjan."],[1,"Ah, très bien ! Ça va ?","Ah, great! How's it going?"],[0,"Ça va bien, merci. À bientôt !","Fine, thanks. See you soon!"]]},
+{t:"My family",w:2,who:["Awa","Paul"],lines:[[0,"Tu as des frères et sœurs ?","Do you have brothers and sisters?"],[1,"Oui, j'ai un frère et deux sœurs. Et toi ?","Yes, I have a brother and two sisters. And you?"],[0,"J'ai une grande sœur. Elle a trente ans.","I have an older sister. She's thirty."],[1,"Elle habite où ?","Where does she live?"],[0,"Elle habite à Dakar avec son mari et leurs enfants.","She lives in Dakar with her husband and their children."],[1,"Ils ont combien d'enfants ?","How many children do they have?"],[0,"Ils ont trois enfants : deux filles et un garçon.","Three children: two girls and a boy."],[1,"Quelle belle famille !","What a lovely family!"]]},
+{t:"At the market",w:3,who:["Vendeuse","Client"],lines:[[0,"Bonjour, monsieur ! Qu'est-ce que vous voulez ?","Hello, sir! What would you like?"],[1,"Bonjour, madame. Je voudrais des mangues, s'il vous plaît.","Hello. I'd like some mangoes, please."],[0,"Voilà. Elles sont très bonnes aujourd'hui.","Here. They're very good today."],[1,"Combien ça coûte ?","How much is it?"],[0,"Cinq cents francs le kilo.","Five hundred francs a kilo."],[1,"C'est un peu cher. Vous pouvez faire un prix ?","It's a bit expensive. Can you lower it?"],[0,"Pour vous, quatre cents francs.","For you, four hundred."],[1,"D'accord. Je prends deux kilos. Merci !","Okay. I'll take two kilos. Thanks!"]]},
+{t:"Where is the station?",w:4,who:["Touriste","Passant"],lines:[[0,"Excusez-moi, où est la gare, s'il vous plaît ?","Excuse me, where is the station, please?"],[1,"Vous allez tout droit, puis vous tournez à gauche.","Go straight ahead, then turn left."],[0,"C'est loin ?","Is it far?"],[1,"Non, c'est à dix minutes à pied.","No, it's ten minutes on foot."],[0,"Merci beaucoup !","Thank you very much!"],[1,"De rien. Bonne journée !","You're welcome. Have a good day!"]]},
+{t:"Your weekend",w:5,who:["Koffi","Nadège"],lines:[[0,"Salut ! Qu'est-ce que tu as fait ce week-end ?","Hi! What did you do this weekend?"],[1,"Samedi, je suis allée au marché et j'ai acheté du poisson.","Saturday I went to the market and bought fish."],[0,"Et dimanche ?","And Sunday?"],[1,"Dimanche, j'ai vu ma famille. On a mangé ensemble.","Sunday I saw my family. We ate together."],[0,"Super ! Moi, je suis resté à la maison. J'ai dormi toute la journée.","Great! I stayed home. I slept all day."],[1,"Tu as bien fait !","Good for you!"]]},
+{t:"Making plans",w:6,who:["Fatou","Marc"],lines:[[0,"Tu peux venir demain soir ?","Can you come tomorrow evening?"],[1,"Je voudrais bien, mais je dois travailler.","I'd like to, but I have to work."],[0,"Tu finis à quelle heure ?","What time do you finish?"],[1,"Je finis à dix-huit heures. Après, je veux me reposer.","I finish at 6 pm. Afterwards I want to rest."],[0,"Alors on peut se voir samedi.","Then we can meet Saturday."],[1,"Oui, samedi, c'est parfait.","Yes, Saturday is perfect."]]},
+{t:"At the pharmacy",w:7,who:["Client","Pharmacien"],lines:[[0,"Bonjour, j'ai mal à la tête et j'ai de la fièvre depuis hier.","Hello, I've had a headache and fever since yesterday."],[1,"Vous avez pris quelque chose ?","Have you taken anything?"],[0,"Non, pas encore.","No, not yet."],[1,"Je vous conseille ce médicament. Si ça ne va pas mieux, il faut voir un médecin.","I recommend this medicine. If you're not better, you should see a doctor."],[0,"Merci. Combien je vous dois ?","Thanks. How much do I owe you?"],[1,"Mille deux cents francs.","One thousand two hundred francs."]]},
+{t:"When I was little",w:8,who:["Léa","Jonas"],lines:[[0,"Où est-ce que tu habitais quand tu étais petit ?","Where did you live when you were little?"],[1,"J'habitais à Jacmel, près de la mer.","I lived in Jacmel, near the sea."],[0,"Et tu faisais quoi après l'école ?","What did you do after school?"],[1,"Je jouais au football avec mes amis, et le soir, ma grand-mère nous racontait des histoires.","I played football with friends, and in the evening my grandmother told us stories."],[0,"Tu avais des histoires préférées ?","Did you have favourite stories?"],[1,"Oui ! Elle racontait toujours les contes de Bouki et Malice.","Yes! She always told the tales of Bouki and Malice."]]},
+{t:"At work",w:9,who:["Sékou","Carine"],lines:[[0,"Tu aimes ton travail ?","Do you like your job?"],[1,"Oui, mais c'est difficile. Mon patron me donne beaucoup de projets.","Yes, but it's hard. My boss gives me lots of projects."],[0,"Tu lui parles de ça ?","Do you talk to him about it?"],[1,"Oui, je lui ai parlé hier. Il m'a dit qu'il va m'aider.","Yes, I spoke to him yesterday. He said he'll help me."],[0,"À mon avis, c'est une bonne chose.","In my opinion, that's a good thing."],[1,"Je suis d'accord.","I agree."]]},
+{t:"At the hotel",w:10,who:["Pierre","Réceptionniste"],lines:[[0,"Bonjour, j'ai réservé une chambre au nom de Pierre.","Hello, I booked a room under Pierre."],[1,"Oui, une chambre pour trois nuits. Votre passeport, s'il vous plaît.","Yes, a room for three nights. Your passport, please."],[0,"Voilà. Pourriez-vous me dire à quelle heure est le petit-déjeuner ?","Here. Could you tell me what time breakfast is?"],[1,"Il est servi à sept heures dans la salle à manger.","It's served at seven in the dining room."],[0,"Parfait. Je partirai samedi matin.","Perfect. I'll leave Saturday morning."],[1,"Très bien. Bon séjour !","Very good. Enjoy your stay!"]]},
+{t:"Catching up",w:11,who:["Ibrahim","Yaya"],lines:[[0,"Salut mon frère ! Ça fait longtemps !","Hey brother! It's been a while!"],[1,"Eh oui ! C'est comment ?","Yes indeed! How's it going?"],[0,"Je suis là, ça va aller. Et toi, quoi de neuf ?","I'm here, it's going okay. And you, what's new?"],[1,"Du coup, j'ai changé de travail le mois dernier.","So, I changed jobs last month."],[0,"Félicitations ! En fait, tu es content ?","Congratulations! So, are you happy?"],[1,"Oui, vraiment. On est ensemble !","Yes, really. Talk soon!"]]}
+];
+
+/* ------------------------- DATA: SOUNDS ----------------------------- */
+const SOUNDS=[
+{k:"u",sp:"u",ex:["tu","rue","sur","du"],tip:"Say « i » but round your lips as for « ou ». Kreyòl has no such sound, so people say « tou » or « ti ». Keep your tongue forward."},
+{k:"ou",sp:"ou",ex:["vous","tout","rouge","pour"],tip:"Same as Kreyòl « ou ». Easy win. Contrast it with u: tu / tout."},
+{k:"eu",sp:"eu, œu",ex:["peu","deux","sœur","heure"],tip:"Say « é » (or « è ») with rounded lips. Not « ou », not « o »."},
+{k:"an / en",sp:"an, en, am, em",ex:["dans","enfant","vent","lentement"],tip:"Nasal vowel, like Kreyòl « an ». Don't pronounce the n."},
+{k:"on",sp:"on, om",ex:["bon","mon","nom","maison"],tip:"Nasal, like Kreyòl « on ». Lips rounded, no n."},
+{k:"in / ain",sp:"in, ain, ein, un",ex:["vin","pain","chien","demain"],tip:"Nasal, like Kreyòl « en » in « ven ». No n."},
+{k:"oi",sp:"oi",ex:["moi","toi","voiture","trois"],tip:"« wa », as in Kreyòl « mwa »."},
+{k:"é / è",sp:"é, è, ê",ex:["été","père","mère","fête"],tip:"Kreyòl has both. é = closed (été). è = open (père)."},
+{k:"r",sp:"r",ex:["rue","merci","rouge","fort"],tip:"Standard French r is made at the back of the throat. West African and some Haitian speakers use a rolled or tapped r. Everyone understands both; copy your tutor."},
+{k:"ch / j / gn",sp:"ch, j/ge, gn",ex:["chat","je","manger","montagne"],tip:"ch = « sh », j = « zh » (like the s in measure), gn = « ny » as in canyon."},
+{k:"silent letters",sp:"final consonants",ex:["petit","grand","parlent","trop"],tip:"Most final consonants are silent. The letters in CaReFuL (c, r, f, l) are often pronounced: avec, hiver, neuf, animal."},
+{k:"liaison",sp:"linking",ex:["les amis","vous avez","un ami","c'est un homme"],tip:"A normally silent final consonant is pronounced before a vowel: « les amis » = lé-za-mi. Compulsory after articles, possessives, and subject pronouns."},
+{k:"rhythm",sp:"stress",ex:["Je voudrais un café","Elle habite à Abidjan"],tip:"French has no word stress. Syllables are even and the last syllable of a phrase is lengthened. Don't stress inside words."}
+];
+const PAIRS=[["tu","tout"],["rue","roue"],["du","doux"],["vu","vous"],["deux","dos"],["sur","sœur"],["bon","banc"],["pain","pont"],["les","lait"]];
+
+/* ------------------------- DATA: KREYÒL BRIDGE ---------------------- */
+const BRIDGE=[
+["mwen / m","je (moi)","Verb ending changes in French: je mange."],
+["ou / w","tu (vous)","Choose tu or vous."],
+["li / l","il, elle, le, la","French separates masculine and feminine."],
+["nou","nous (vous)","Nous also needs a verb ending: nous mangeons."],
+["yo","ils, elles, les","Plural verb: ils mangent (silent -ent)."],
+["se","c'est / être","Kreyòl drops « se » before adjectives (Manman m malad). French needs être: Ma mère est malade."],
+["gen / genyen","avoir / il y a","Mwen gen yon frè → J'ai un frère. Gen moun → Il y a des gens."],
+["pa","ne … pas","Wraps the verb: Je ne sais pas. In speech often: Je sais pas."],
+["te","passé composé / imparfait","See weeks 5 and 8."],
+["ap","en train de / present","Yo ap travay → Ils travaillent / Ils sont en train de travailler."],
+["pral / va","aller + inf. / futur","M pral manje → Je vais manger."],
+["ta","conditionnel (-rais)","Mwen ta vle → Je voudrais."],
+["vle / kapab / dwe","vouloir / pouvoir / devoir","Same pattern + infinitive, but conjugate."],
+["konnen","savoir / connaître","Facts and skills = savoir. People and places = connaître."],
+["liv la","le livre","Article moves before the noun."],
+["lekòl, lajan, dlo, diri","l'école, l'argent, de l'eau, du riz","Frozen French articles. Hooks for gender and spelling."],
+["mache","marcher / le marché","Same word in Kreyòl, two in French."],
+["pitit","l'enfant (not « petit »)","False friend: pitit = child. petit = small."],
+["men","mais","Also « here is » in Kreyòl. French men = nothing; use mais."],
+["lè","quand","Lè m rive → Quand j'arrive."],
+["paske","parce que","Paske li malad → Parce qu'il est malade."],
+["anpil","beaucoup (de)","Anpil moun → beaucoup de monde / de gens."],
+["kounye a","maintenant","Also: à présent."]
+];
+
+/* ------------------------- DATA: STREET FRENCH ---------------------- */
+const STREET=[
+{h:"West African French (Côte d'Ivoire, Senegal, Cameroon and others)",note:"Usage varies by country, age and setting. Confirm anything slangy with your tutor before using it.",items:[
+["On est ensemble.","Talk soon / we're good / we're together.","Friendly sign-off, widely heard in Ivorian French."],
+["C'est comment ?","How's it going?","Casual greeting among friends in Côte d'Ivoire and neighbours."],
+["Je suis là.","I'm fine / I'm here (reply to a greeting).","Common answer to « ça va ? »."],
+["Ça va aller.","It'll be fine.","Reassurance. Very frequent."],
+["Bonne arrivée !","Welcome (to someone arriving).","Said when someone gets in from a trip."],
+["Doucement.","Take it easy / my sympathies.","Said to someone going through difficulty or loss."],
+["Mon frère / ma sœur / tonton / tantie","Respectful address for peers or elders","Calling unrelated people by family terms is normal."],
+["Tchip","Sucking teeth: annoyance","Not a word: a sound shared with Kreyòl (tchip)."],
+["Gaou","Fool, naive person (Nouchi, Ivorian)","Slang. Informal, can be rude."],
+["Enjailler / enjaillement","To have fun / a fun time (Nouchi)","Slang from Abidjan."],
+["ce monsieur-là, cette affaire-là","that man, that matter","The « -là » tag after the noun is very common."],
+["C'est ça même.","That's exactly it.","« même » as emphasis in spoken West African French."]]},
+{h:"Haitian French notes",note:"If you pick up French from Haitian speakers, these patterns are normal and worth knowing.",items:[
+["Bonjour, comment allez-vous ?","Formal greeting","Greeting properly before asking anything is expected."],
+["Vous + elders","Respectful form","Same in West Africa."],
+["Je suis en train de…","I'm in the middle of…","Mirrors Kreyòl « m ap »."],
+["Il y a / il n'y a pas","there is / is not","Mirrors Kreyòl « gen / pa gen »."]]},
+{h:"France (secondary target)",note:"Casual speech you'll hear in French media.",items:[
+["Du coup","so / as a result","Used constantly as a filler."],
+["Ça marche","okay, works for me","Agreeing to a plan."],
+["J'sais pas","I don't know","ne and u often drop in speech."],
+["C'est ouf","it's crazy","Verlan (fou reversed)."],
+["T'inquiète","don't worry","Short for « ne t'inquiète pas »."],
+["Bof","meh","Shrug sound."],
+["Grave","a lot / totally","Je suis grave fatigué."],
+["Je galère","I'm struggling","Also: c'est la galère."]]}
+];
+
+/* ------------------------- DATA: SOURCES ---------------------------- */
+const SOURCES=[
+{n:"italki",tag:"Tutor",u:"https://www.italki.com",d:"Filter by tutor country: Côte d'Ivoire, Senegal, Cameroon, Haiti, Martinique, Guadeloupe. Book 30-min trial lessons with 3 different tutors, keep the best two."},
+{n:"Preply",tag:"Tutor",u:"https://www.preply.com",d:"Same idea. Compare prices; message tutors about accent before booking."},
+{n:"RFI Journal en français facile",tag:"West Africa",u:"https://www.rfi.fr",d:"Slow, clear daily news bulletin with transcript. Your main listening staple."},
+{n:"RFI Afrique",tag:"West Africa",u:"https://www.rfi.fr",d:"Africa-focused news and reports. Normal speed. Use after week 4."},
+{n:"TV5MONDE Afrique",tag:"West Africa",u:"https://afrique.tv5monde.com",d:"Video and news from across Francophone Africa."},
+{n:"TV5MONDE Apprendre le français",tag:"Learning",u:"https://apprendre.tv5monde.com",d:"Graded exercises with videos, A1 to B2."},
+{n:"Africanews (français)",tag:"West Africa",u:"https://fr.africanews.com",d:"Short news videos, clear presenters."},
+{n:"Maîtresse d'un homme marié",tag:"West Africa",u:"",d:"Senegalese series (check availability in your region). Watch with French subtitles."},
+{n:"Le Nouvelliste",tag:"Caribbean",u:"https://lenouvelliste.com",d:"Haitian French-language newspaper. Reading practice with names and places you know."},
+{n:"Music: Magic System, Tiken Jah Fakoly, Alpha Blondy, Youssou N'Dour",tag:"West Africa",u:"",d:"Look up lyrics, listen first, then read, then sing along."},
+{n:"InnerFrench",tag:"France",u:"https://www.innerfrench.com",d:"Intermediate podcast with transcripts. Once a week from week 5."},
+{n:"Easy French (YouTube)",tag:"France",u:"https://www.youtube.com/@EasyFrench",d:"Street interviews with subtitles. Good for the secondary target."},
+{n:"Anki",tag:"Tool",u:"https://apps.ankiweb.net",d:"If you outgrow the built-in cards, import a frequency deck and keep going."},
+{n:"Forvo",tag:"Tool",u:"https://forvo.com",d:"Native recordings. Filter by country to hear Ivorian, Senegalese or Cameroonian speakers."},
+{n:"Lingolia French",tag:"Grammar",u:"https://francais.lingolia.com/en",d:"Look up grammar when you need it. Don't read it front to back."},
+{n:"Language Reactor",tag:"Tool",u:"https://www.languagereactor.com",d:"Browser extension: dual subtitles on YouTube and Netflix."},
+{n:"Reverso Conjugation",tag:"Tool",u:"https://conjugator.reverso.net",d:"Any verb, any tense, instantly."}
+];
+const TUTOR_MSG="Bonjour ! Je suis haïtien(ne) et je parle créole haïtien. Je veux parler français avec un accent ouest-africain. Je suis au niveau débutant. Est-ce que vous pouvez m'aider à parler le plus possible pendant les cours ? / Hello! I speak Haitian Kreyòl and want to learn French with a West African accent. I'm a beginner and want lessons mostly spent speaking.";
+
+/* ------------------------- DATA: DRILLS ----------------------------- */
+const PR=["je","tu","il / elle","nous","vous","ils / elles"];
+const CONJ={
+present:[
+{v:"être",en:"to be",f:["suis","es","est","sommes","êtes","sont"]},
+{v:"avoir",en:"to have",f:["ai","as","a","avons","avez","ont"]},
+{v:"aller",en:"to go",f:["vais","vas","va","allons","allez","vont"]},
+{v:"faire",en:"to do / make",f:["fais","fais","fait","faisons","faites","font"]},
+{v:"vouloir",en:"to want",f:["veux","veux","veut","voulons","voulez","veulent"]},
+{v:"pouvoir",en:"can",f:["peux","peux","peut","pouvons","pouvez","peuvent"]},
+{v:"devoir",en:"must",f:["dois","dois","doit","devons","devez","doivent"]},
+{v:"savoir",en:"to know",f:["sais","sais","sait","savons","savez","savent"]},
+{v:"venir",en:"to come",f:["viens","viens","vient","venons","venez","viennent"]},
+{v:"prendre",en:"to take",f:["prends","prends","prend","prenons","prenez","prennent"]},
+{v:"parler",en:"to speak",f:["parle","parles","parle","parlons","parlez","parlent"]},
+{v:"manger",en:"to eat",f:["mange","manges","mange","mangeons","mangez","mangent"]},
+{v:"finir",en:"to finish",f:["finis","finis","finit","finissons","finissez","finissent"]},
+{v:"dire",en:"to say",f:["dis","dis","dit","disons","dites","disent"]},
+{v:"voir",en:"to see",f:["vois","vois","voit","voyons","voyez","voient"]},
+{v:"boire",en:"to drink",f:["bois","bois","boit","buvons","buvez","boivent"]}],
+imparfait:[
+{v:"être",en:"to be",f:["étais","étais","était","étions","étiez","étaient"]},
+{v:"avoir",en:"to have",f:["avais","avais","avait","avions","aviez","avaient"]},
+{v:"aller",en:"to go",f:["allais","allais","allait","allions","alliez","allaient"]},
+{v:"faire",en:"to do",f:["faisais","faisais","faisait","faisions","faisiez","faisaient"]},
+{v:"parler",en:"to speak",f:["parlais","parlais","parlait","parlions","parliez","parlaient"]},
+{v:"habiter",en:"to live",f:["habitais","habitais","habitait","habitions","habitiez","habitaient"]}],
+futur:[
+{v:"être",en:"to be",f:["serai","seras","sera","serons","serez","seront"]},
+{v:"avoir",en:"to have",f:["aurai","auras","aura","aurons","aurez","auront"]},
+{v:"aller",en:"to go",f:["irai","iras","ira","irons","irez","iront"]},
+{v:"faire",en:"to do",f:["ferai","feras","fera","ferons","ferez","feront"]},
+{v:"parler",en:"to speak",f:["parlerai","parleras","parlera","parlerons","parlerez","parleront"]},
+{v:"pouvoir",en:"can",f:["pourrai","pourras","pourra","pourrons","pourrez","pourront"]}]
+};
+const PART=[["manger","avoir","mangé"],["parler","avoir","parlé"],["finir","avoir","fini"],["vendre","avoir","vendu"],["faire","avoir","fait"],["prendre","avoir","pris"],["avoir","avoir","eu"],["être","avoir","été"],["voir","avoir","vu"],["dire","avoir","dit"],["boire","avoir","bu"],["pouvoir","avoir","pu"],["vouloir","avoir","voulu"],["devoir","avoir","dû"],["savoir","avoir","su"],["comprendre","avoir","compris"],["écrire","avoir","écrit"],["lire","avoir","lu"],["mettre","avoir","mis"],["venir","être","venu"],["aller","être","allé"],["partir","être","parti"],["arriver","être","arrivé"],["sortir","être","sorti"],["naître","être","né"],["mourir","être","mort"]];
+// [week, sentence, accepted answers, hint]
+const CLOZE=[
+[1,"Je ___ haïtien.",["suis"],"être"],[1,"Tu ___ ivoirien ?",["es"],"être"],[1,"Nous ___ amis.",["sommes"],"être"],
+[2,"J'___ deux frères.",["ai"],"avoir"],[2,"___ femme est grande.",["la"],"the (f)"],[2,"Il y ___ un problème.",["a"],"avoir"],[2,"Elle est ___. (happy)",["contente"],"feminine"],
+[3,"Je ___ du riz.",["mange"],"manger"],[3,"Nous ___ du poisson.",["mangeons"],"manger"],[3,"Je voudrais ___ café.",["du"],"some (m)"],[3,"Je ne mange pas ___ viande.",["de"],"after negation"],
+[4,"Je ___ au marché.",["vais"],"aller"],[4,"Nous ___ manger à la maison. (going to)",["allons"],"aller"],[4,"Tu vas ___ gauche.",["à"],"to the left"],[4,"Elle ___ le bus.",["prend"],"prendre"],[4,"Ils ___ de Dakar.",["viennent"],"venir"],
+[5,"Hier, j'___ mangé du riz.",["ai"],"avoir"],[5,"Elle est ___ à midi. (arriver)",["arrivée"],"être verb, feminine"],[5,"Nous sommes ___ au marché. (aller, masc. plural)",["allés"],"agree"],[5,"Tu as ___ ce film ? (voir)",["vu"],"participle"],[5,"Je n'___ pas fini.",["ai"],"avoir"],
+[6,"Je ___ parler français. (can)",["peux"],"pouvoir"],[6,"Il ___ partir demain. (must)",["doit"],"devoir"],[6,"Vous ___ venir ? (want)",["voulez"],"vouloir"],[6,"Je ne ___ pas. (know a fact)",["sais"],"savoir"],[6,"Elle se ___ à six heures. (lever)",["lève"],"se lever"],
+[7,"J'ai mal ___ tête.",["à la","a la"],"à + la"],[7,"Ma mère est plus âgée ___ mon père.",["que"],"comparison"],[7,"C'est ___ frère. (my)",["mon"],"possessive"],[7,"Ils ont besoin ___ aide.",["d'","d’"],"de + aide"],
+[8,"Quand j'___ petit, j'habitais à Port-au-Prince.",["étais"],"imparfait of être"],[8,"Nous ___ au marché tous les samedis.",["allions"],"imparfait of aller"],[8,"Il ___ quand je suis sorti. (to rain)",["pleuvait"],"imparfait of pleuvoir"],[8,"Elle ___ souvent ici. (venir, imparfait)",["venait"],"imparfait"],
+[9,"Je ___ vois tous les jours. (you, direct)",["te"],"direct pronoun"],[9,"Je ___ parle. (to him/her)",["lui"],"indirect pronoun"],[9,"Elle ___ achète. (them, direct)",["les"],"direct pronoun"],[9,"Tu ___ vas demain ? (there)",["y"],"y"],[9,"J'___ veux deux. (of them)",["en"],"en"],
+[10,"Demain, je ___ au bureau. (être, futur)",["serai"],"futur"],[10,"Ils ___ demain. (arriver, futur)",["arriveront"],"futur"],[10,"Je ___ une chambre. (would like)",["voudrais"],"conditionnel"],[10,"S'il pleut, je ___ à la maison. (rester, futur)",["resterai"],"futur"],[10,"___-vous m'aider ? (could)",["pourriez"],"conditionnel"],
+[11,"Il faut que je ___. (partir)",["parte"],"subjonctif"],[11,"C'est la femme ___ habite ici.",["qui"],"subject"],[11,"C'est le film ___ j'ai vu.",["que"],"object"]
+];
+// [Kreyòl, correct French, [3 wrong], note]
+const BQ=[
+["Mwen manje diri a.","Je mange le riz.",["Je manger le riz.","Je mange riz le.","Moi mange le riz."],"The article goes before the noun, and the verb takes an ending."],
+["Li pa konnen.","Il ne sait pas.",["Il pas sait.","Il ne pas sait.","Il sait ne pas."],"ne…pas wraps the verb."],
+["Mwen te wè l yè.","Je l'ai vu hier.",["Je ai vu le hier.","Je vu l'ai hier.","Je le suis vu hier."],"Pronoun before the auxiliary: je l'ai vu."],
+["M pral manje.","Je vais manger.",["Je vais mange.","Je vas manger.","Je suis aller manger."],"aller + infinitive."],
+["Mwen vle ale.","Je veux partir.",["Je veux part.","Je voulez partir.","Je veux partons."],"Modal + infinitive (never conjugate the second verb)."],
+["Gen anpil moun nan mache a.","Il y a beaucoup de monde au marché.",["Il y a beaucoup monde au marché.","Il a beaucoup de monde au marché.","Il y a beaucoup de monde dans le marché à."],"il y a = gen. beaucoup de. au = à + le."],
+["Mwen pa gen lajan.","Je n'ai pas d'argent.",["Je n'ai pas de l'argent.","Je ai pas argent.","Je pas ai d'argent."],"After pas, du/de la becomes de."],
+["Manman m malad.","Ma mère est malade.",["Mère ma malade.","Ma mère malade.","Ma mère a malade."],"French needs être before the adjective."],
+["Mwen te kontan wè w.","J'étais content de te voir.",["Je étais content te voir.","J'ai content de te voir.","Je suis été content de te voir."],"Imparfait for a state in the past, and a verb is needed."],
+["Ki kote ou rete ?","Tu habites où ?",["Où tu es habites ?","Quoi tu habites ?","Tu habiter où ?"],"Question word at the end, or Où est-ce que tu habites ?"],
+["Yo ap travay.","Ils sont en train de travailler.",["Ils sont travaillent.","Ils en train travailler.","Ils est en train de travailler."],"ap = in progress. Simple present « Ils travaillent » also works."],
+["Mwen konnen li.","Je le connais.",["Je le sais.","Je sais lui.","Je connais le."],"People = connaître, and the pronoun goes before."],
+["Mwen wè yo.","Je les vois.",["Je vois les.","Je vois eux.","Je leur vois."],"Pronoun before the verb."]
+];
+
+/* ------------------------- DATA: SPEAKING --------------------------- */
+const PROMPTS=[
+[["Présente-toi en 30 secondes : nom, pays, âge.","Introduce yourself: name, country, age."],["Demande : Tu t'appelles comment ? Tu es d'où ?","Ask someone's name and origin."],["Épelle ton prénom en français.","Spell your first name in French."],["Compte de 1 à 20.","Count 1 to 20."]],
+[["Décris ta famille.","Describe your family."],["Décris un ami ou une amie.","Describe a friend."],["Dis ce que tu as et ce que tu n'as pas.","Say what you have and don't have."],["Décris ta maison.","Describe your home."]],
+[["Commande un repas au restaurant.","Order a meal."],["Marchande au marché.","Bargain at the market."],["Dis ce que tu manges le matin, midi et soir.","Say what you eat through the day."],["Dis ce que tu aimes et n'aimes pas manger.","Say what you like and dislike."]],
+[["Explique comment aller de chez toi au marché.","Explain how to get from home to the market."],["Dis ce que tu vas faire ce week-end.","Say what you'll do this weekend."],["Pose cinq questions : où, quand, pourquoi, comment, qui.","Ask five questions."],["Décris ton trajet quotidien.","Describe your daily route."]],
+[["Raconte ton hier.","Tell about yesterday."],["Raconte ton dernier voyage.","Tell about your last trip."],["Dis trois choses que tu n'as jamais faites.","Say three things you've never done."],["Dis ce que tu as mangé cette semaine.","What you ate this week."]],
+[["Dis ce que tu veux, peux et dois faire demain.","What you want, can and must do tomorrow."],["Décris ta routine du matin.","Your morning routine."],["Invite quelqu'un, puis accepte ou refuse poliment.","Invite someone, accept or decline politely."],["Dis ce que tu sais faire.","Say what you know how to do."]],
+[["Chez le médecin : explique tes symptômes.","At the doctor: describe symptoms."],["Compare deux personnes de ta famille.","Compare two relatives."],["Parle de ta santé et de tes habitudes.","Your health and habits."],["Dis ce dont tu as besoin cette semaine.","What you need this week."]],
+[["Raconte un souvenir d'enfance.","Tell a childhood memory."],["Décris ta ville quand tu étais petit.","Describe your town as a child."],["Raconte un événement : ce qui se passait et ce qui est arrivé.","Tell an event with background and action."],["Explique pourquoi tu apprends le français.","Why you're learning French."]],
+[["Donne ton avis sur un sujet.","Give an opinion on a topic."],["Parle de ton travail avec des pronoms.","Talk about work using pronouns."],["Débat : vivre en ville ou au village ?","Debate: city or village?"],["Réponds en remplaçant les noms par des pronoms.","Answer replacing nouns with pronouns."]],
+[["Réserve une chambre d'hôtel.","Book a hotel room."],["Planifie un voyage.","Plan a trip."],["Que feras-tu si… ?","What will you do if…?"],["Demande poliment avec le conditionnel.","Ask politely using the conditional."]],
+[["Monologue de 3 minutes sur ta vie.","3-minute monologue about your life."],["Conversation de 15 minutes avec un tuteur.","15-minute tutor conversation."],["Raconte un film ou un épisode.","Retell a film or episode."],["Fais le point : ce que tu sais dire maintenant.","What you can say now."]]
+];
+const CANDO=[
+"I can introduce myself and ask basic questions.","I can count, give prices and understand how much things cost.","I can order food and buy things at a market.","I can ask for and follow directions.","I can describe my family and my home.","I can talk about my day using the present tense.","I can say what I did yesterday (passé composé).","I can say what I want, can and must do.","I can explain symptoms and ask for help.","I can tell a childhood story (imparfait + passé composé).","I can give an opinion and a reason.","I can use le, la, les, lui, leur, y, en in simple sentences.","I can book a room and plan a trip.","I can understand the main points of RFI Journal en français facile.","I can hold a 10-minute conversation with a tutor, mostly in French.","I can repair a conversation: ask to repeat, rephrase, ask what a word means.","I can recognise West African and French pronunciation differences.","I can talk about my life, plans and opinions for 15 minutes."
+];
+const TASKS=[
+{id:"cards",min:15,t:"Flashcards",d:"Review due cards and add new ones. Say every word aloud.",go:"cards"},
+{id:"listen",min:30,t:"Listening",d:"Listening mix and readings in Immerse, then real audio from Sources with a transcript.",go:"immerse"},
+{id:"shadow",min:15,t:"Shadowing",d:"Repeat one short dialogue line by line, copying rhythm and sounds.",go:"lib:dialogues"},
+{id:"speak",min:15,t:"Speaking",d:"Answer this week's prompts out loud.",go:"speak"},
+{id:"tutor",min:0,t:"Tutor session (30 min)",d:"Twice a week from week 4, with a West African or Haitian tutor.",from:4,go:"lib:sources"}
+];
+
+/* ------------------------- DATA: SENTENCE BANK ---------------------- */
+// One list per week, built from that week's grammar. [French, English]
+const SENT=[
+[["Bonjour, je m'appelle Nadia.","Hello, my name is Nadia."],["Je suis haïtienne.","I am Haitian."],["Tu es de Dakar ?","Are you from Dakar?"],["Nous sommes amis.","We are friends."],["Il est médecin.","He is a doctor."],["Elle est ivoirienne.","She is Ivorian."],["Vous êtes d'où ?","Where are you from?"],["Ça va très bien, merci.","I'm doing very well, thanks."],["Je ne comprends pas. Répétez, s'il vous plaît.","I don't understand. Please repeat."],["Pardon, je ne sais pas.","Sorry, I don't know."],["Enchanté, à demain !","Nice to meet you, see you tomorrow!"]],
+[["J'ai une grande famille.","I have a big family."],["Elle a trois enfants.","She has three children."],["Il y a un garçon et deux filles.","There is a boy and two girls."],["Le fils est content.","The son is happy."],["La maison est belle.","The house is beautiful."],["Nous avons un chien.","We have a dog."],["Tu as quel âge ?","How old are you?"],["J'ai vingt-cinq ans.","I'm twenty-five."],["Ils ont une petite fille.","They have a little girl."],["C'est un bon ami.","He's a good friend."],["Elle est jeune et très gentille.","She is young and very kind."]],
+[["Je mange du riz et du poisson.","I eat rice and fish."],["Nous buvons de l'eau.","We drink water."],["Elle achète des légumes au marché.","She buys vegetables at the market."],["Tu manges de la viande ?","Do you eat meat?"],["Je ne mange pas de pain le soir.","I don't eat bread in the evening."],["Combien coûte le poulet ?","How much is the chicken?"],["C'est trop cher !","That's too expensive!"],["J'ai faim et j'ai soif.","I'm hungry and thirsty."],["Je voudrais un café avec du lait.","I'd like a coffee with milk."],["L'addition, s'il vous plaît.","The bill, please."]],
+[["Je vais à l'école à pied.","I walk to school."],["Nous allons au bureau en bus.","We go to the office by bus."],["Tu vas où ?","Where are you going?"],["Il va venir demain.","He is going to come tomorrow."],["Elle prend un taxi pour aller à l'aéroport.","She takes a taxi to get to the airport."],["Où est l'hôpital ?","Where is the hospital?"],["Tournez à droite, puis allez tout droit.","Turn right, then go straight ahead."],["La gare est près d'ici.","The station is near here."],["Pourquoi tu viens ?","Why are you coming?"],["Je vais manger avec mes amis.","I'm going to eat with my friends."]],
+[["Hier, j'ai travaillé toute la journée.","Yesterday I worked all day."],["Ce matin, je me suis réveillé tôt.","This morning I woke up early."],["Nous avons mangé au marché.","We ate at the market."],["Elle est partie à six heures.","She left at six."],["Tu as déjà fini ?","Have you already finished?"],["Je n'ai pas encore mangé.","I haven't eaten yet."],["Samedi dernier, ils sont allés à la plage.","Last Saturday they went to the beach."],["J'ai vu mon ami hier soir.","I saw my friend last night."],["Il a dormi jusqu'à midi.","He slept until noon."],["Qu'est-ce que tu as fait lundi ?","What did you do on Monday?"]],
+[["Je veux apprendre le français.","I want to learn French."],["Tu peux m'aider, s'il te plaît ?","Can you help me, please?"],["Je dois partir maintenant.","I have to leave now."],["Je sais cuisiner, mais je ne connais pas cette ville.","I know how to cook, but I don't know this city."],["Nous voulons voyager en décembre.","We want to travel in December."],["Il faut parler tous les jours.","You have to speak every day."],["Elle se lève à cinq heures.","She gets up at five."],["Vous pouvez répéter ?","Can you repeat?"],["Je ne peux pas venir ce soir.","I can't come tonight."],["Tu connais ma sœur ?","Do you know my sister?"]],
+[["J'ai mal à la tête depuis hier.","I've had a headache since yesterday."],["Mon frère est plus grand que moi.","My brother is taller than me."],["Ma mère a besoin d'un médecin.","My mother needs a doctor."],["Il a peur de l'avion.","He's afraid of planes."],["Je suis fatigué et j'ai chaud.","I'm tired and I'm hot."],["Elle est aussi gentille que sa sœur.","She is as kind as her sister."],["Ses enfants sont malades.","Her children are sick."],["Notre famille est en bonne santé.","Our family is in good health."],["Vous avez de la fièvre ?","Do you have a fever?"],["Mes pieds me font mal.","My feet hurt."]],
+[["Quand j'étais petit, nous habitions près de la mer.","When I was little, we lived near the sea."],["Le soir, ma grand-mère racontait des histoires.","In the evening, my grandmother told stories."],["Il pleuvait, alors nous sommes restés à la maison.","It was raining, so we stayed home."],["D'abord, j'ai mangé, ensuite je suis sorti.","First I ate, then I went out."],["Elle travaillait beaucoup, mais elle était contente.","She worked a lot, but she was happy."],["Je jouais au football tous les samedis.","I played football every Saturday."],["Nous allions à l'école à pied.","We used to walk to school."],["Pendant que je dormais, il est arrivé.","While I was sleeping, he arrived."],["Avant, je ne parlais pas français.","Before, I didn't speak French."],["Je me souviens de cette maison.","I remember that house."]],
+[["À mon avis, c'est une bonne idée.","In my opinion, it's a good idea."],["Je pense que le projet est difficile.","I think the project is hard."],["Je les vois tous les jours.","I see them every day."],["Elle lui a donné un livre.","She gave him a book."],["Tu leur as parlé hier ?","Did you talk to them yesterday?"],["J'y vais demain.","I'm going there tomorrow."],["Il en veut trois.","He wants three of them."],["Je ne suis pas d'accord avec le patron.","I don't agree with the boss."],["Ça dépend de la situation.","It depends on the situation."],["Je vais le voir à la réunion.","I'm going to see him at the meeting."]],
+[["Demain, nous partirons à sept heures.","Tomorrow we'll leave at seven."],["Je voudrais réserver une chambre pour deux nuits.","I'd like to book a room for two nights."],["Pourriez-vous m'indiquer la plage ?","Could you show me the way to the beach?"],["S'il pleut, nous resterons à l'hôtel.","If it rains, we'll stay at the hotel."],["Elle aura son passeport vendredi.","She'll have her passport on Friday."],["Ils arriveront à l'aéroport à midi.","They'll arrive at the airport at noon."],["J'aimerais voyager en Afrique.","I'd like to travel to Africa."],["Il fera chaud demain.","It'll be hot tomorrow."],["Nous irons à la frontière en bus.","We'll go to the border by bus."],["Je serai là à huit heures.","I'll be there at eight."]],
+[["Ça fait longtemps ! Quoi de neuf ?","It's been a while! What's new?"],["En fait, j'ai changé d'avis.","Actually, I changed my mind."],["Du coup, nous avons décidé de rester.","So we decided to stay."],["Bref, c'était une très bonne journée.","In short, it was a very good day."],["Il faut que je parte.","I have to go."],["C'est la femme qui habite ici.","She's the woman who lives here."],["C'est le livre que j'ai lu.","It's the book that I read."],["Pas de souci, on se voit demain.","No worries, we'll see each other tomorrow."],["Tu peux répéter, s'il te plaît ?","Can you repeat, please?"],["Bon courage pour demain !","Good luck for tomorrow!"]]
+];
+const SENT_ALL=[];SENT.forEach((a,i)=>a.forEach(x=>SENT_ALL.push({w:i+1,fr:x[0],en:x[1]})));
+
+/* ------------------------- DATA: READINGS --------------------------- */
+const READS=[
+{w:1,t:"Je me présente",lines:[["Bonjour ! Je m'appelle Nadia.","Hello! My name is Nadia."],["Je suis haïtienne.","I am Haitian."],["Mon ami s'appelle Moussa.","My friend is called Moussa."],["Il est sénégalais.","He is Senegalese."],["Nous sommes amis.","We are friends."],["Nous parlons français.","We speak French."],["Ça va très bien !","Everything is going very well!"]]},
+{w:2,t:"La famille de Nadia",lines:[["Nadia a une grande famille.","Nadia has a big family."],["Elle a deux frères et une sœur.","She has two brothers and a sister."],["Son père est médecin.","Her father is a doctor."],["Sa mère est professeur.","Her mother is a teacher."],["La sœur de Nadia est très jeune : elle a dix ans.","Nadia's sister is very young: she is ten."],["Ils habitent dans une belle maison.","They live in a beautiful house."],["Il y a aussi un chien dans la maison.","There is also a dog in the house."]]},
+{w:3,t:"Au marché",lines:[["Samedi, Nadia va au marché.","On Saturday, Nadia goes to the market."],["Elle achète du riz, du poisson et des mangues.","She buys rice, fish and mangoes."],["Le vendeur dit : « Les mangues sont fraîches ! »","The seller says: «The mangoes are fresh!»"],["Nadia demande : « Combien ça coûte ? »","Nadia asks: «How much is it?»"],["Le prix est un peu cher.","The price is a bit expensive."],["Alors elle négocie, et le vendeur accepte.","So she haggles, and the seller agrees."],["Elle rentre à la maison avec de bons légumes.","She goes home with good vegetables."]]},
+{w:4,t:"Un voyage en ville",lines:[["Aujourd'hui, Moussa va à la gare.","Today, Moussa goes to the station."],["Il prend le bus parce que c'est loin.","He takes the bus because it's far."],["Il demande à une femme : « Où est la gare ? »","He asks a woman: «Where is the station?»"],["Elle répond : « Allez tout droit, puis tournez à gauche. »","She answers: «Go straight ahead, then turn left.»"],["Moussa dit merci et continue son chemin.","Moussa says thank you and goes on his way."],["Dans une heure, il va arriver à Abidjan.","In an hour, he is going to arrive in Abidjan."]]},
+{w:5,t:"Hier",lines:[["Hier, Nadia s'est réveillée à six heures.","Yesterday, Nadia woke up at six."],["Elle a mangé du pain et elle a bu du café.","She ate bread and drank coffee."],["Ensuite, elle est allée au travail.","Then she went to work."],["Elle a travaillé jusqu'à cinq heures.","She worked until five."],["Le soir, elle a vu ses amis.","In the evening, she saw her friends."],["Ils ont mangé ensemble et ils ont beaucoup parlé.","They ate together and talked a lot."],["Elle n'a pas dormi tôt.","She didn't go to sleep early."]]},
+{w:6,t:"Les projets de Moussa",lines:[["Moussa veut apprendre l'anglais.","Moussa wants to learn English."],["Il doit travailler beaucoup, mais il peut étudier le soir.","He has to work a lot, but he can study in the evening."],["Il sait déjà parler français et wolof.","He already knows how to speak French and Wolof."],["Il connaît un bon professeur.","He knows a good teacher."],["Chaque matin, il se lève à cinq heures.","Every morning he gets up at five."],["Il faut être patient, dit-il.","One must be patient, he says."]]},
+{w:7,t:"Chez le médecin",lines:[["Aujourd'hui, Nadia est malade.","Today, Nadia is sick."],["Elle a mal à la tête et elle a de la fièvre.","She has a headache and a fever."],["Sa mère l'emmène chez le médecin.","Her mother takes her to the doctor."],["Le médecin dit : « Vous avez besoin de repos. »","The doctor says: «You need rest.»"],["Nadia est plus fatiguée que d'habitude.","Nadia is more tired than usual."],["Elle prend ses médicaments et elle dort.","She takes her medicine and sleeps."]]},
+{w:8,t:"Mon enfance",lines:[["Quand j'étais petit, j'habitais à Jacmel.","When I was little, I lived in Jacmel."],["Ma maison était près de la mer.","My house was near the sea."],["Tous les matins, j'allais à l'école avec mes amis.","Every morning I went to school with my friends."],["Le soir, nous jouions dans la rue.","In the evening, we played in the street."],["Un jour, il a beaucoup plu et nous sommes restés à la maison.","One day it rained a lot and we stayed home."],["Ma grand-mère nous a raconté une histoire.","My grandmother told us a story."],["Je me souviens encore de sa voix.","I still remember her voice."]]},
+{w:9,t:"Une discussion",lines:[["Karim et Aïcha parlent de leur travail.","Karim and Aïcha talk about their work."],["Karim pense que son patron est trop sévère.","Karim thinks his boss is too strict."],["Aïcha lui dit : « À mon avis, tu dois lui parler. »","Aïcha tells him: «In my opinion, you should talk to him.»"],["Karim répond : « Je veux le faire, mais j'ai peur. »","Karim answers: «I want to do it, but I'm afraid.»"],["« Je comprends, dit Aïcha, mais ça dépend de toi. »","«I understand,» says Aïcha, «but it depends on you.»"],["Finalement, il lui parle le lendemain.","In the end, he speaks to him the next day."]]},
+{w:10,t:"Un voyage au Sénégal",lines:[["L'été prochain, Nadia voyagera au Sénégal.","Next summer, Nadia will travel to Senegal."],["Elle réservera une chambre à Dakar.","She will book a room in Dakar."],["Elle prendra l'avion et elle arrivera le soir.","She will take the plane and arrive in the evening."],["À l'hôtel, elle dira : « Bonsoir, j'ai réservé une chambre. »","At the hotel she will say: «Good evening, I booked a room.»"],["S'il fait chaud, elle ira à la plage.","If it's hot, she will go to the beach."],["Elle voudrait aussi visiter le marché.","She would also like to visit the market."]]},
+{w:11,t:"Après trois mois",lines:[["Il y a trois mois, Nadia ne parlait presque pas français.","Three months ago, Nadia hardly spoke any French."],["Aujourd'hui, elle peut parler avec son tuteur pendant quinze minutes.","Today she can talk with her tutor for fifteen minutes."],["Parfois, elle cherche ses mots, alors elle dit : « Comment dit-on… ? »","Sometimes she looks for her words, so she says: «How do you say…?»"],["En fait, elle comprend déjà beaucoup plus.","In fact, she already understands a lot more."],["Il faut qu'elle continue à parler tous les jours.","She needs to keep speaking every day."],["Bref, elle est contente de ses progrès.","In short, she's happy with her progress."]]}
+];
+
+/* ------------------------- DATA: ACCENT LAB ------------------------- */
+const ACCENTS=[
+{id:"std",n:"France (standard)",feats:["The r is made at the back of the throat.","Fast pace. Unstressed vowels shorten and the final e often drops (je sais pas).","u and eu are strongly rounded.","Liaison is careful in formal speech and lighter in casual speech."],hear:["RFI Journal en français facile","InnerFrench podcast","Easy French street interviews"],search:["Easy French Paris interviews"]},
+{id:"sn",n:"Senegal",feats:["Often described as clear and evenly paced (a tendency, not a rule).","Many speakers use a tapped or rolled r.","Wolof influence on rhythm and vowel length for some speakers.","Long, polite greetings are part of everyday talk."],hear:["Maîtresse d'un homme marié (series)","RFI reports from Dakar"],search:["série sénégalaise sous-titrée français","reportage Dakar RFI"]},
+{id:"ci",n:"Côte d'Ivoire",feats:["Lively, expressive intonation.","Everyday speech in Abidjan blends in Nouchi slang.","Vowels tend to stay full and clear rather than reduced (varies by speaker).","Rhythm is often more even, syllable by syllable, than in France."],hear:["Magic System and Alpha Blondy (music, then read the lyrics)","RFI reports from Abidjan"],search:["humoristes ivoiriens sous-titrés","reportage Abidjan RFI"]},
+{id:"cm",n:"Cameroon",feats:["Very varied: French sits alongside English and many local languages.","Relaxed, conversational speech with its own slang.","Rhythm and intonation differ by region and speaker."],hear:["Cameroonian news and talk shows (search)"],search:["actualité Cameroun émission débat"]},
+{id:"ht",n:"Haiti",feats:["Kreyòl influence is strongest here, and you share it.","Some speakers replace the French u with a sound closer to i (a tendency among some speakers).","A careful, formal register in greetings and public speaking.","Haitian tutors know exactly where Kreyòl trips up French learners."],hear:["Le Nouvelliste (reading)","Haitian TV and radio news (search)"],search:["journal télévisé haïtien","radio haïtienne en français"]},
+{id:"ant",n:"Martinique / Guadeloupe",feats:["Melodic intonation with influence from Antillean creoles.","French is the main school language, so tutors speak full standard French with local colour.","Close to France French in vocabulary, with local expressions."],hear:["Martinique la 1ère and Guadeloupe la 1ère (regional TV and radio)"],search:["Martinique la 1ère journal","Guadeloupe la 1ère reportage"]}
+];
+const LAB_R=["back of throat","rolled or tapped","soft, hard to hear","not sure"];
+const LAB_U=["rounded like France","closer to i","closer to ou","not sure"];
+const LAB_PACE=["slow","medium","fast"];
+const LAB_SENT=[
+["Tu as vu la rue sur la route ?","u and r"],
+["Je voudrais trois mangues, s'il vous plaît.","oi, nasal an, r"],
+["Les enfants ont mangé du pain.","liaison, nasals an and in"],
+["Mon frère habite à Abidjan depuis longtemps.","nasals on and an, r"],
+["Demain, nous irons au marché avec nos amis.","liaison, é"],
+["Quand j'étais petit, j'habitais près de la mer.","imparfait rhythm, è, r"],
+["Il y a beaucoup de monde dans la rue.","eu-sounds, u, r"],
+["Vous êtes d'où ? Moi, je suis de Port-au-Prince.","intonation of questions"]
+];
+
+/* ------------------------- STATE & STORAGE -------------------------- */
+const KEYS=["set","cards","daily","newToday","cando","log","score","lab","read"];
+const HAS_WS=(()=>{try{return !!(window.storage&&typeof window.storage.get==="function")}catch(e){return false}})();
+// Inside Claude: window.storage (persists across sessions). Elsewhere: localStorage.
+const store={
+ cache:{},
+ async init(){
+  for(const k of KEYS){
+   try{
+    if(HAS_WS){const r=await window.storage.get("parlons:"+k,false);if(r&&r.value!=null)this.cache[k]=JSON.parse(r.value)}
+    else{const v=localStorage.getItem("parlons:"+k);if(v!==null)this.cache[k]=JSON.parse(v)}
+   }catch(e){}
+  }
+ },
+ get(k,d){return k in this.cache?this.cache[k]:d},
+ set(k,v){
+  this.cache[k]=v;
+  try{
+   if(HAS_WS)window.storage.set("parlons:"+k,JSON.stringify(v),false).then(r=>{if(!r)toast("Couldn't save progress")}).catch(()=>toast("Couldn't save progress"));
+   else localStorage.setItem("parlons:"+k,JSON.stringify(v));
+  }catch(e){}
+ },
+ async clear(){
+  for(const k of KEYS){try{if(HAS_WS)await window.storage.delete("parlons:"+k,false);else localStorage.removeItem("parlons:"+k)}catch(e){}}
+  if(HAS_WS){try{const l=await window.storage.list("parlons:clip:",false);for(const k of(l&&l.keys)||[])await window.storage.delete(k,false)}catch(e){}}
+ }
+};
+const pad=n=>String(n).padStart(2,"0");
+const today=()=>{const d=new Date();return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())};
+const dayNum=iso=>Math.round(Date.parse(iso)/864e5);
+const isoOf=n=>new Date(n*864e5).toISOString().slice(0,10);
+const S={
+ tab:"today",lib:"sounds",week:null,speakWeek:null,dTab:"conj",labTab:"guide",imTab:"sent",sentWeek:null,readOpen:null,dlg:null,hideFr:false,showEn:true,
+ set:Object.assign({start:today(),perDay:12,rate:0.85,voice:"",unlockAll:false,mode:"recall"},store.get("set",{})),
+ cards:store.get("cards",{}),daily:store.get("daily",{}),newToday:store.get("newToday",{date:"",n:0}),
+ cando:store.get("cando",{}),log:store.get("log",[]),score:store.get("score",{}),lab:store.get("lab",{listen:[],trials:[]}),read:store.get("read",{})
+};
+const save=k=>store.set(k==="set"?"set":k,S[k==="set"?"set":k]);
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const norm=s=>s.trim().toLowerCase().replace(/[’‘]/g,"'").replace(/\s+/g," ");
+const plain=s=>norm(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+const WEEKS=11;
+function currentWeek(){const d=dayNum(today())-dayNum(S.set.start);return Math.max(1,Math.min(WEEKS,Math.floor(d/7)+1))}
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),2200)}
+
+/* ------------------------- AUDIO (browser TTS) ---------------------- */
+function voices(){try{return speechSynthesis.getVoices().filter(v=>/^fr([-_]|$)/i.test(v.lang)&&!/[-_]CA/i.test(v.lang))}catch(e){return[]}}
+function speak(text,who=0,cb,rate){
+ if(!("speechSynthesis" in window)){toast("Audio is not supported in this browser.");return}
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(text);u.lang="fr-FR";
+ const vs=voices();let v=vs.find(x=>x.name===S.set.voice);
+ if(!v&&vs.length)v=vs[who%vs.length];
+ if(v&&who===1&&vs.length>1&&S.set.voice)v=vs.find(x=>x.name!==S.set.voice)||v;
+ if(v)u.voice=v;u.rate=rate||S.set.rate;
+ if(cb){u.onend=cb;u.onerror=cb}
+ speechSynthesis.speak(u);
+}
+if("speechSynthesis" in window)speechSynthesis.onvoiceschanged=()=>{if(S.tab==="today")render()};
+let playToken=0;
+function playAll(i){const t=++playToken,L=DIALOGUES[i].lines;let k=0;const next=()=>{if(t!==playToken||k>=L.length)return;speak(L[k][1],L[k][0],()=>{k++;setTimeout(next,350)})};next()}
+const sp=(t,w=0)=>`<button class="spk" data-say="${esc(t)}" data-who="${w}" aria-label="Listen"></button>`;
+const sps=(t,w=0)=>`<span class="sp2">${sp(t,w)}<button class="spk slow" data-say="${esc(t)}" data-who="${w}" data-slow="1" aria-label="Listen slowly"></button></span>`;
+
+/* ------------------------- SRS -------------------------------------- */
+let SESS=null,speakNext=null;
+function buildQueue(){
+ const t=dayNum(today()),wk=currentWeek(),due=[],news=[];
+ for(const c of ALL){const st=S.cards[c.id];if(st){if(st.due<=t)due.push(c)}else if(S.set.unlockAll||c.w<=wk)news.push(c)}
+ if(S.newToday.date!==today()){S.newToday={date:today(),n:0};save("newToday")}
+ const left=Math.max(0,S.set.perDay-S.newToday.n);
+ return{due:shuffle(due),news:news.slice(0,left)};
+}
+function startSession(){
+ const{due,news}=buildQueue();
+ SESS={queue:[...due.map(c=>({c,isNew:false})),...news.map(c=>({c,isNew:true}))],shown:false,total:due.length+news.length,done:0};
+ if(SESS.queue.length&&SESS.queue[0].isNew)speakNext=SESS.queue[0].c.fr;
+ render();
+}
+function rateCard(q){
+ const it=SESS.queue[0],t=dayNum(today());let st=S.cards[it.c.id];
+ if(it.isNew){
+  S.cards[it.c.id]={reps:1,ef:2.5,int:1,due:t+1,lapses:0};
+  S.newToday.n++;save("newToday");SESS.queue.shift();SESS.done++;
+ }else{
+  st=st||{reps:0,ef:2.5,int:0,due:t,lapses:0};
+  if(q===0){st.lapses++;st.reps=0;st.int=0;st.ef=Math.max(1.3,st.ef-0.2);st.due=t;SESS.queue.shift();SESS.queue.splice(Math.min(3,SESS.queue.length),0,{c:it.c,isNew:false})}
+  else{
+   if(st.reps===0)st.int=q===3?3:1;
+   else if(st.reps===1)st.int=q===3?6:(q===1?2:3);
+   else{const m=q===1?1.2:(q===3?st.ef*1.3:st.ef);st.int=Math.max(st.int+1,Math.round(st.int*m))}
+   st.ef=Math.max(1.3,st.ef+(q===1?-0.15:q===3?0.1:0));st.reps++;st.due=t+st.int;
+   SESS.queue.shift();SESS.done++;
+  }
+  S.cards[it.c.id]=st;
+ }
+ save("cards");SESS.shown=false;
+ const nx=SESS.queue[0];if(nx&&nx.isNew)speakNext=nx.c.fr;
+ if(!SESS.queue.length){markDaily("cards",true)}
+ render();
+}
+function markDaily(id,v){const d=today();S.daily[d]=S.daily[d]||{};S.daily[d][id]=v;save("daily")}
+
+/* ------------------------- DRILL STATE ------------------------------ */
+const D={dict:{cur:null,fb:null},order:{cur:null,fb:null},conj:{tense:"present",cur:null,fb:null},gender:{cur:null,fb:null},cloze:{cur:null,fb:null},bridge:{cur:null,fb:null},part:{cur:null,fb:null}};
+function bump(k,ok){const s=S.score[k]=S.score[k]||{c:0,t:0};s.t++;if(ok)s.c++;save("score")}
+function grade(given,answers){
+ const g=norm(given);if(!g)return"empty";
+ if(answers.some(a=>norm(a)===g))return"ok";
+ if(answers.some(a=>plain(a)===plain(g)))return"mid";
+ return"no";
+}
+const nouns=ALL.map(c=>{
+ let m=c.fr.match(/^(le|un) (.+)$/);if(m)return{w:m[2],g:"m",full:c.fr};
+ m=c.fr.match(/^(la|une) (.+)$/);if(m)return{w:m[2],g:"f",full:c.fr};
+ m=c.fr.match(/^l'(.+) \((m|f)\)$/);if(m)return{w:m[1],g:m[2],full:"l'"+m[1]+" ("+m[2]+")"};
+ return null}).filter(Boolean);
+function genderTip(w){
+ if(/(tion|té|ure|ette|ence|ance|ie)$/.test(w))return"Words ending like this are usually feminine.";
+ if(/(age|ment|eau|isme|ier)$/.test(w))return"Words ending like this are usually masculine.";
+ return"";
+}
+function newDrill(kind){
+ const d=D[kind];d.fb=null;
+ if(kind==="conj"){const v=pick(CONJ[d.tense]);d.cur={v,i:Math.floor(Math.random()*6)}}
+ if(kind==="gender")d.cur=pick(nouns);
+ if(kind==="cloze"){const pool=CLOZE.filter(c=>S.set.unlockAll||c[0]<=currentWeek());d.cur=pick(pool.length?pool:CLOZE)}
+ if(kind==="bridge"){const q=pick(BQ);d.cur={q,opts:shuffle([q[1],...q[2]])}}
+ if(kind==="part")d.cur=pick(PART);
+ if(kind==="dict"){const pool=SENT_ALL.filter(x=>S.set.unlockAll||x.w<=currentWeek());d.cur=pick(pool.length?pool:SENT_ALL);speakNext=d.cur.fr}
+ if(kind==="order"){
+  const pool=SENT_ALL.filter(x=>(S.set.unlockAll||x.w<=currentWeek())&&!/[«»]/.test(x.fr)&&x.fr.split(" ").length>=3&&x.fr.split(" ").length<=10);
+  const x=pick(pool.length?pool:SENT_ALL.filter(y=>!/[«»]/.test(y.fr)));
+  const target=x.fr.replace(/[.,!?;:]/g,"").toLowerCase().split(" ").filter(Boolean);
+  let p;do{p=shuffle(target.map(t=>({t})))}while(target.length>1&&p.map(o=>o.t).join(" ")===target.join(" "));
+  d.cur={fr:x.fr,en:x.en,target,pool:p,picked:[]};
+ }
+}
+
+/* ------------------------- VIEWS ------------------------------------ */
+function viewToday(){
+ const w=currentWeek(),L=LESSONS[w-1],d=today(),done=S.daily[d]||{};
+ const tasks=TASKS.filter(t=>!t.from||w>=t.from);
+ const core=tasks.filter(t=>t.min>0),total=core.reduce((a,t)=>a+t.min,0),dm=core.filter(t=>done[t.id]).reduce((a,t)=>a+t.min,0);
+ const q=buildQueue(),pool=ALL.filter(c=>c.w<=w),wod=pool[dayNum(d)%pool.length];
+ let st=0,t=dayNum(d);const has=n=>{const o=S.daily[isoOf(n)];return o&&Object.values(o).some(Boolean)};
+ if(!has(t))t--;while(has(t)){st++;t--}
+ const end=dayNum(S.set.start)+WEEKS*7-1,left=end-dayNum(d);
+ const learned=Object.keys(S.cards).length;
+ const vs=voices();
+ return`
+ <div class="card lead">
+  <div class="muted small">Today's word (week ${w})</div>
+  <div class="row"><div class="big grow">${esc(wod.fr)}</div>${sp(wod.fr)}</div>
+  <div>${esc(wod.en)} ${wod.kr?`<span class="kr">Kreyòl: ${esc(wod.kr)}</span>`:""}</div>
+ </div>
+ <div class="card">
+  <h2>Week ${w}: ${esc(L.t)}</h2>
+  <p>${esc(L.goal)}</p>
+  <div class="row"><button class="btn" data-act="go" data-arg="plan:${w}">Open this week's lesson</button>
+  <span class="muted small">${left>0?left+" days to your target":"Target date reached"}</span></div>
+ </div>
+ <div class="card">
+  <div class="row sb"><h3>Today's routine</h3><span class="muted small">${dm} of ${total} min</span></div>
+  <div class="bar" role="progressbar" aria-valuenow="${dm}" aria-valuemax="${total}"><i style="width:${Math.round(dm/total*100)}%"></i></div>
+  ${tasks.map(k=>`<div class="task"><input type="checkbox" id="t-${k.id}" data-act="task" data-arg="${k.id}" ${done[k.id]?"checked":""}>
+   <div class="grow"><label for="t-${k.id}"><b>${esc(k.t)}</b> ${k.min?`<span class="muted small">${k.min} min</span>`:""}</label><div class="muted small">${esc(k.d)}</div></div>
+   <button class="btn alt sm" data-act="go" data-arg="${k.go}">Open</button></div>`).join("")}
+ </div>
+ <div class="card flat"><div class="row sb">
+  <div><b>${q.due.length}</b> due · <b>${q.news.length}</b> new cards</div>
+  <div><b>${learned}</b> words started · <b>${st}</b> day streak</div>
+  <button class="btn good" data-act="go" data-arg="cards">Study cards</button></div></div>
+ <details class="card" ${S.expTxt||S.rst?"open":""}><summary>Settings and progress</summary>
+  <p class="small muted">Start date (week 1 begins here)</p><input type="date" data-set="start" value="${S.set.start}">
+  <p class="small muted">New cards per day</p><select data-set="perDay">${[5,8,12,15,20].map(n=>`<option ${S.set.perDay==n?"selected":""}>${n}</option>`).join("")}</select>
+  <p class="small muted">Voice speed</p><select data-set="rate">${[0.6,0.7,0.85,1].map(n=>`<option value="${n}" ${S.set.rate==n?"selected":""}>${n}x</option>`).join("")}</select>
+  <p class="small muted">Voice (France-French voices on your device. These are not West African; see Library > Sources for that.)</p>
+  <select data-set="voice"><option value="">Automatic</option>${vs.map(v=>`<option ${S.set.voice===v.name?"selected":""}>${esc(v.name)}</option>`).join("")}</select>
+  <p class="small muted">Card style for reviews</p><select data-set="mode"><option value="recall" ${S.set.mode==="recall"?"selected":""}>Recall: English → say the French</option><option value="recognise" ${S.set.mode==="recognise"?"selected":""}>Recognise: French → English</option></select>
+  <label class="ck"><input type="checkbox" data-set="unlockAll" ${S.set.unlockAll?"checked":""}> Unlock vocabulary from all weeks</label>
+  <p class="small muted">Back up your learning progress to a JSON file in Files on your iPhone. Restore it later on this or another device. Audio recordings and uploaded audio clips are not included.</p>
+  <div class="row"><button class="btn good sm" data-act="downloadprogress">Export progress file</button><button class="btn alt sm" data-act="export">Show backup text</button>${S.expTxt?`<button class="btn alt sm" data-act="copyexp">Copy</button>`:""}</div>
+  ${S.expTxt?`<textarea readonly rows="4" onclick="this.select()">${esc(S.expTxt)}</textarea>`:""}
+  <label class="small muted" for="progressfile">Restore from a saved progress file</label><input id="progressfile" type="file" accept=".json,application/json" style="margin-bottom:10px"><textarea id="imp" rows="3" placeholder="Or paste backup text here to restore" style="margin-top:8px"></textarea>
+  <div class="row" style="margin-top:8px"><button class="btn alt sm" data-act="import">Restore from text</button><button class="btn bad sm" data-act="reset">${S.rst?"Tap again to erase everything":"Reset everything"}</button></div>
+ </details>`;
+}
+
+
+/* Global French comparison: region-specific examples are illustrative, not universal. */
+const GLOBAL_FRENCH=[
+ {topic:"Greetings",rows:[["Common French","Bonjour, comment ça va ?","Hello, how are you?"],["Casual French (France)","Salut, ça va ?","Hi, how's it going?"],["African Francophone example (Côte d’Ivoire, informal)","On dit quoi ?","What's up?"],["Haitian Kreyòl","Bonjou, kijan ou ye ?","Hello, how are you?"]],note:"On dit quoi ? is an informal expression associated with Ivorian urban speech; it is not used everywhere in Africa."},
+ {topic:"Family and introductions",rows:[["Common French","Voici ma famille.","This is my family."],["Casual French (France)","Je te présente ma famille.","Let me introduce you to my family."],["African Francophone example (Senegal)","Je vous présente ma famille.","Let me introduce my family to you (polite)."],["Haitian Kreyòl","Men fanmi mwen.","Here is my family."]],note:"The Senegal example illustrates polite French in a Senegalese context, not a uniquely Senegalese phrase."},
+ {topic:"At the market",rows:[["Common French","Combien ça coûte ?","How much does it cost?"],["Casual French (France)","C'est combien ?","How much is it?"],["African Francophone example (West African market context)","Vous pouvez diminuer le prix ?","Can you lower the price?"],["Haitian Kreyòl","Konbyen sa koute ?","How much does it cost?"]],note:"Bargaining depends on the shop and setting; it is not appropriate everywhere."},
+ {topic:"Going somewhere",rows:[["Common French","Où est la gare ?","Where is the train station?"],["Casual French (France)","Elle est où, la gare ?","Where's the station?"],["African Francophone example (Cameroon)","Où est la gare routière ?","Where is the bus station?"],["Haitian Kreyòl","Ki kote estasyon an ye ?","Where is the station?"]],note:"Gare routière is widely understood French; this is a Cameroon-based situation, not an exclusive regional expression."},
+ {topic:"Yesterday",rows:[["Common French","Hier, j'ai travaillé.","Yesterday, I worked."],["Casual French (France)","J'ai bossé hier.","I worked yesterday."],["African Francophone example (DR Congo)","Hier, j'ai travaillé toute la journée.","Yesterday, I worked all day."],["Haitian Kreyòl","Yè, mwen te travay.","Yesterday, I worked."]],note:"Bosser is informal and understood in many places. The Congolese example uses shared French grammar."},
+ {topic:"Asking for help",rows:[["Common French","Pouvez-vous m'aider ?","Can you help me?"],["Casual French (France)","Tu peux m'aider ?","Can you help me?"],["African Francophone example (Madagascar)","Est-ce que vous pouvez m'aider, s'il vous plaît ?","Could you please help me?"],["Haitian Kreyòl","Èske ou ka ede m, souple ?","Can you help me, please?"]],note:"The Madagascar example is a situational example of polite French, not a uniquely Malagasy French expression."},
+ {topic:"Feeling unwell",rows:[["Common French","J'ai mal à la tête.","I have a headache."],["Casual French (France)","J'ai super mal à la tête.","I have a really bad headache."],["African Francophone example (Morocco)","Je ne me sens pas bien.","I don't feel well."],["Haitian Kreyòl","Tèt mwen fè m mal.","My head hurts."]],note:"French is used alongside Arabic and Amazigh languages in Morocco; this sentence is not specific to Morocco."},
+ {topic:"Childhood",rows:[["Common French","Quand j'étais petit, je jouais dehors.","When I was little, I played outside."],["Casual French (France)","Petit, je jouais tout le temps dehors.","As a kid, I was always playing outside."],["African Francophone example (Benin)","Quand j'étais enfant, je jouais avec mes cousins.","When I was a child, I played with my cousins."],["Haitian Kreyòl","Lè m te piti, mwen te konn jwe deyò.","When I was little, I used to play outside."]],note:"The Benin example is a shared-French usage in a Beninese setting, not a regional idiom."},
+ {topic:"Opinions",rows:[["Common French","À mon avis, c'est important.","In my opinion, it's important."],["Casual French (France)","Moi, je trouve ça important.","Personally, I think that's important."],["African Francophone example (Tunisia)","Selon moi, c'est très important.","In my view, it's very important."],["Haitian Kreyòl","Dapre mwen, sa enpòtan.","In my opinion, it's important."]],note:"These are broadly intelligible expressions; French in Tunisia exists in a multilingual context."},
+ {topic:"Travel plans",rows:[["Common French","Je vais voyager la semaine prochaine.","I'm traveling next week."],["Casual French (France)","Je pars la semaine pro.","I'm leaving next week."],["African Francophone example (Mauritius)","Je vais partir en voyage la semaine prochaine.","I'm going on a trip next week."],["Haitian Kreyòl","Mwen pral vwayaje semèn pwochèn.","I'm traveling next week."]],note:"Mauritius is multilingual, and this French expression is not uniquely Mauritian."},
+ {topic:"Clarifying meaning",rows:[["Common French","Qu'est-ce que ça veut dire ?","What does that mean?"],["Casual French (France)","Ça veut dire quoi ?","What's that mean?"],["African Francophone example (Djibouti)","Pouvez-vous expliquer ce mot ?","Can you explain this word?"],["Haitian Kreyòl","Sa vle di kisa ?","What does that mean?"]],note:"The Djibouti example uses standard French and illustrates an everyday multilingual learning context."}
+];
+function globalFrenchCard(w){
+ const g=GLOBAL_FRENCH[w-1];if(!g)return '';
+ return `<div class="card global-french"><h3>French around the world · ${esc(g.topic)}</h3><p class="small muted">Compare common French, casual French from France, an African Francophone example, and Haitian Kreyòl.</p><div class="global-scroll"><table><thead><tr><th>Learning context</th><th>Expression</th><th>Meaning</th></tr></thead><tbody>${g.rows.map((r,i)=>`<tr><td>${esc(r[0])}</td><td><div class="row">${i===3?'':sp(r[1])}<b>${esc(r[1])}</b></div></td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div><p class="small muted">${esc(g.note)}</p></div>`;
+}
+
+function viewPlan(){
+ const cw=currentWeek(),w=S.week||cw,L=LESSONS[w-1];
+ const dl=DIALOGUES.findIndex(x=>x.w===w);
+ return`
+ <div class="chips" role="group" aria-label="Weeks">${LESSONS.map((_,i)=>`<button class="chip ${i+1<cw?"done":""}" aria-pressed="${i+1===w}" data-act="week" data-arg="${i+1}">${i+1}</button>`).join("")}</div>
+ <div class="card lead"><h2>Week ${w}: ${esc(L.t)}</h2><p><b>Goal:</b> ${esc(L.goal)}</p></div>
+ <div class="card"><h3>Kreyòl bridge</h3><p>${esc(L.bridge)}</p></div>
+ ${globalFrenchCard(w)}
+ <div class="card"><h3>Key points</h3><ul class="tight">${L.points.map(p=>`<li>${esc(p)}</li>`).join("")}</ul></div>
+ <div class="card"><h3>Examples</h3>${L.ex.map(e=>`<div class="ex">${sps(e[0])}<div><div><b>${esc(e[0])}</b></div><div class="muted small">${esc(e[1])}</div></div></div>`).join("")}</div>
+ <div class="card"><h3>This week</h3><p><b>Listening:</b> ${esc(L.listen)}</p><p><b>Checkpoint:</b> ${esc(L.check)}</p>
+  <div class="row"><button class="btn" data-act="go" data-arg="cards">Study cards</button><button class="btn alt" data-act="go" data-arg="drills">Drills</button><button class="btn alt" data-act="speakwk" data-arg="${w}">Speaking prompts</button><button class="btn alt" data-act="sentwk" data-arg="${w}">Sentences</button><button class="btn alt" data-act="openread" data-arg="${w-1}">Reading</button>${dl>=0?`<button class="btn alt" data-act="opendlg" data-arg="${dl}">Dialogue</button>`:""}</div></div>
+ <details class="card"><summary>Vocabulary for week ${w} (${VOCAB[w].length} items)</summary>
+  ${VOCAB[w].map(v=>`<div class="ex">${sp(v[0])}<div><b>${esc(v[0])}</b> <span class="muted">${esc(v[1])}</span> ${v[2]?`<span class="kr">${esc(v[2])}</span>`:""}</div></div>`).join("")}</details>`;
+}
+
+function viewCards(){
+ const lc=Object.keys(S.cards).length,mature=Object.values(S.cards).filter(c=>c.int>=21).length;
+ if(!SESS){
+  const q=buildQueue();
+  return`<div class="card lead"><h2>Flashcards</h2>
+   <p><b>${q.due.length}</b> reviews due and <b>${q.news.length}</b> new cards today.</p>
+   <p class="muted small">New cards show the French and play audio. Say it aloud before you continue. Reviews follow your card style in Settings.</p>
+   <button class="btn good" data-act="start" ${q.due.length+q.news.length?"":"disabled"}>Start session</button>
+   ${q.due.length+q.news.length?"":`<p>You're done for today. Come back tomorrow, or raise the daily limit in Settings.</p>`}</div>
+  <div class="card flat"><b>${lc}</b> of ${ALL.length} words started · <b>${mature}</b> well known (21+ day interval)</div>`;
+ }
+ if(!SESS.queue.length)return`<div class="card lead"><h2>Session complete</h2><p>${SESS.done} cards done. Great work.</p><button class="btn" data-act="endsess">Back</button></div>`;
+ const it=SESS.queue[0],c=it.c,pct=Math.round(SESS.done/SESS.total*100);
+ let body;
+ if(it.isNew){
+  body=`<div class="muted small">New word</div><div class="row"><div class="big grow">${esc(c.fr)}</div>${sp(c.fr)}</div>
+   <p>${esc(c.en)} ${c.kr?`<span class="kr">Kreyòl: ${esc(c.kr)}</span>`:""}</p><p class="muted small">Say it out loud twice.</p>
+   <button class="btn good" data-act="rate" data-arg="2">Got it</button>`;
+ }else if(S.set.mode==="recall"){
+  body=!SESS.shown?`<div class="muted small">Say it in French</div><div class="big">${esc(c.en)}</div><button class="btn" data-act="reveal">Show answer</button>`
+   :`<div class="muted small">${esc(c.en)}</div><div class="row"><div class="big grow">${esc(c.fr)}</div>${sp(c.fr)}</div>${c.kr?`<span class="kr">Kreyòl: ${esc(c.kr)}</span>`:""}${rateRow()}`;
+ }else{
+  body=!SESS.shown?`<div class="muted small">What does it mean?</div><div class="row"><div class="big grow">${esc(c.fr)}</div>${sp(c.fr)}</div><button class="btn" data-act="reveal">Show answer</button>`
+   :`<div class="row"><div class="big grow">${esc(c.fr)}</div>${sp(c.fr)}</div><p>${esc(c.en)} ${c.kr?`<span class="kr">Kreyòl: ${esc(c.kr)}</span>`:""}</p>${rateRow()}`;
+ }
+ return`<div class="bar"><i style="width:${pct}%"></i></div><div class="card" style="margin-top:12px">${body}</div><button class="btn alt sm" data-act="endsess">End session</button>`;
+}
+const rateRow=()=>`<div class="rate"><button class="btn bad sm" data-act="rate" data-arg="0">Again</button><button class="btn alt sm" data-act="rate" data-arg="1">Hard</button><button class="btn good sm" data-act="rate" data-arg="2">Good</button><button class="btn sm" data-act="rate" data-arg="3">Easy</button></div>`;
+
+function viewDrills(){
+ const t=S.dTab,d=D[t];if(!d.cur)newDrill(t);
+ const tabs=[["dict","Dictation"],["order","Word order"],["conj","Conjugate"],["part","Participles"],["gender","Gender"],["cloze","Fill in"],["bridge","Kreyòl → French"]];
+ const sc=S.score[t],scoreTxt=sc?`${sc.c} / ${sc.t} correct`:"";
+ let body="";
+ if(t==="dict"){
+  const c=d.cur;
+  body=`<p class="muted">Listen, then type what you hear. Use the ½ button to slow it down.</p><div class="row">${sps(c.fr)}</div><div style="height:10px"></div>${ansBox(d)}`;
+ }
+ if(t==="order"){
+  const c=d.cur;
+  body=`<p class="muted small">Build the French sentence</p><p class="big" style="font-size:1.4rem">${esc(c.en)}</p>
+   <div class="card flat" style="min-height:54px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">${c.picked.length?c.picked.map((p,i)=>`<button class="chip" data-act="oun" data-arg="${i}">${esc(p.t)}</button>`).join(""):`<span class="muted small">Tap words below in order</span>`}</div>
+   <div class="chips">${c.pool.map((p,i)=>`<button class="chip" data-act="opick" data-arg="${i}">${esc(p.t)}</button>`).join("")}</div>
+   ${d.fb?`<div class="fb ${d.fb.ok?"ok":"no"}">${d.fb.ok?"Correct.":"Not quite."} <b>${esc(c.fr)}</b> ${sps(c.fr)}</div><button class="btn" data-act="next">Next</button>`:`<button class="btn" data-act="check" ${c.picked.length?"":"disabled"}>Check</button>`}`;
+ }
+ if(t==="conj"){
+  const{v,i}=d.cur;
+  body=`<div class="row"><select data-act="tense" style="width:auto">${["present","imparfait","futur"].map(x=>`<option value="${x}" ${d.tense===x?"selected":""}>${x==="present"?"Présent":x==="imparfait"?"Imparfait":"Futur simple"}</option>`).join("")}</select></div>
+   <p class="big">${PR[i]} + <span style="color:var(--palm)">${v.v}</span> ${sp(v.v)}</p><p class="muted">${v.en}</p>${ansBox(d)}`;
+ }
+ if(t==="part"){
+  const[inf,aux,pp]=d.cur;
+  body=`<p>Past participle of</p><p class="big">${inf} ${sp(inf)}</p><p class="muted">auxiliary: ${aux}${aux==="être"?" (give the masculine singular)":""}</p>${ansBox(d)}`;
+ }
+ if(t==="gender"){
+  const n=d.cur;
+  body=`<p>Is it masculine or feminine?</p><p class="big">${esc(n.w)} ${sp(n.w)}</p>
+   ${d.fb?`<div class="fb ${d.fb.ok?"ok":"no"}"><b>${esc(n.full)}</b> ${d.fb.ok?"Correct.":""} ${genderTip(n.w)}</div><button class="btn" data-act="next">Next</button>`:
+   `<div class="row"><button class="btn" data-act="gpick" data-arg="m">Masculine (le / un)</button><button class="btn" data-act="gpick" data-arg="f">Feminine (la / une)</button></div>`}`;
+ }
+ if(t==="cloze"){
+  const c=d.cur;
+  body=`<p class="big" style="font-size:1.6rem">${esc(c[1])}</p><p class="muted">Hint: ${esc(c[3])} · week ${c[0]}</p>${ansBox(d)}`;
+ }
+ if(t==="bridge"){
+  const{q,opts}=d.cur;
+  body=`<p>How do you say this in French?</p><p class="big" style="font-size:1.6rem">${esc(q[0])}</p>
+   ${opts.map((o,i)=>`<button class="opt ${d.fb?(o===q[1]?"ok":(d.fb.pick===o?"no":"")):""}" data-act="bpick" data-arg="${i}" ${d.fb?"disabled":""}>${esc(o)}</button>`).join("")}
+   ${d.fb?`<div class="fb ${d.fb.ok?"ok":"no"}">${esc(q[3])}</div>${sp(q[1])} <button class="btn" data-act="next">Next</button>`:""}`;
+ }
+ return`<div class="chips" role="group">${tabs.map(x=>`<button class="chip" aria-pressed="${t===x[0]}" data-act="dtab" data-arg="${x[0]}">${x[1]}</button>`).join("")}</div>
+  <div class="card"><div class="row sb"><h3>${tabs.find(x=>x[0]===t)[1]}</h3><span class="muted small">${scoreTxt}</span></div>${body}</div>`;
+}
+function ansBox(d){
+ if(d.fb){
+  const msg=d.fb.r==="ok"?"Correct.":d.fb.r==="mid"?"Almost: check the accents.":"Not quite.";
+  return`<div class="fb ${d.fb.r==="ok"?"ok":d.fb.r==="mid"?"mid":"no"}">${msg} Answer: <b>${esc(d.fb.ans)}</b>${d.fb.say?" "+sps(d.fb.say):""}${d.fb.en?`<div class="small muted">${esc(d.fb.en)}</div>`:""}</div><button class="btn" data-act="next">Next</button>`;
+ }
+ return`<div class="row"><input type="text" class="ans" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Your answer"><button class="btn" data-act="check">Check</button></div>`;
+}
+
+let REC={on:false,start:0,recs:[],msg:""},recorder=null,chunks=[],recTimer=null;
+function viewSpeak(){
+ const w=S.speakWeek||currentWeek(),P=PROMPTS[w-1];
+ const avg=S.log.length?(S.log.reduce((a,l)=>a+l.r,0)/S.log.length).toFixed(1):"–";
+ const mins=S.log.reduce((a,l)=>a+l.m,0);
+ return`<div class="chips">${LESSONS.map((_,i)=>`<button class="chip" aria-pressed="${i+1===w}" data-act="speakwk" data-arg="${i+1}">${i+1}</button>`).join("")}</div>
+ <div class="card lead"><h3>Prompts for week ${w}</h3>${P.map(p=>`<div class="ex">${sp(p[0])}<div><b>${esc(p[0])}</b><div class="muted small">${esc(p[1])}</div></div></div>`).join("")}
+  <p class="small muted">Answer out loud, 1 to 2 minutes each. Record yourself, listen back, and redo it once with one correction.</p></div>
+ <div class="card"><h3>Record yourself</h3>
+  <div class="row"><button class="btn ${REC.on?"bad":"good"}" data-act="rec">${REC.on?"Stop":"Record"}</button>
+  <span><span class="recdot ${REC.on?"on":""}"></span><span id="rt">${REC.on?"Recording…":"Ready"}</span></span></div>
+  ${REC.msg?`<p class="fb no">${esc(REC.msg)}</p>`:""}
+  ${REC.recs.map(r=>`<div style="margin-top:10px"><div class="small muted">${esc(r.label)}</div><audio controls src="${r.url}" style="width:100%;max-width:100%"></audio><a class="small" href="${r.url}" download="parlons-${r.label.replace(/\W+/g,"-")}.webm">Download</a></div>`).join("")}
+  <p class="small muted">Recordings stay on this page only while it is open. Download any you want to keep, especially your first one to compare in week 11.</p></div>
+ <div class="card"><h3>Log a speaking session</h3>
+  <div class="row"><div class="grow"><label class="small muted" for="lm">Minutes</label><input type="number" id="lm" min="1" max="240" value="15"></div>
+  <div class="grow"><label class="small muted" for="lr">How did it feel? (1 to 5)</label><select id="lr"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></div></div>
+  <label class="small muted" for="ln">Note (one thing to fix)</label><input type="text" id="ln" placeholder="e.g. liaison in « les amis »">
+  <p><button class="btn" data-act="log">Save session</button></p>
+  <p class="small muted">${S.log.length} sessions · ${mins} min · average ${avg}/5</p>
+  ${S.log.slice(-5).reverse().map(l=>`<div class="small">${l.d} · week ${l.w} · ${l.m} min · ${l.r}/5 ${l.n?"· "+esc(l.n):""}</div>`).join("")}</div>`;
+}
+async function toggleRec(){
+ if(REC.on){recorder&&recorder.stop();return}
+ REC.msg="";
+ try{
+  if(!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder==='undefined')throw Error('Microphone recording requires Safari over HTTPS.');
+  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+  recorder=new MediaRecorder(stream);chunks=[];
+  recorder.ondataavailable=e=>chunks.push(e.data);
+  recorder.onstop=()=>{
+   clearInterval(recTimer);
+   const blob=new Blob(chunks,{type:recorder.mimeType||"audio/webm"});
+   REC.recs.unshift({url:URL.createObjectURL(blob),label:new Date().toLocaleTimeString()+" (week "+currentWeek()+")"});
+   stream.getTracks().forEach(t=>t.stop());REC.on=false;render();
+  };
+  recorder.start();REC.on=true;REC.start=Date.now();render();
+  recTimer=setInterval(()=>{const e=$("#rt");if(e){const s=Math.floor((Date.now()-REC.start)/1000);e.textContent="Recording "+Math.floor(s/60)+":"+pad(s%60)}},500);
+ }catch(e){REC.msg="Microphone unavailable here. On iPhone, use the app in Safari from an HTTPS address and allow microphone access. The Files preview cannot reliably record.";render()}
+}
+
+function viewLib(){
+ const subs=[["sounds","Sounds"],["lab","Accent Lab"],["bridge","Kreyòl bridge"],["global","Global French"],["dialogues","Dialogues"],["street","Street French"],["sources","Sources"],["mile","Milestones"]];
+ let b="";
+ if(S.lib==="lab")b=viewLab();
+ if(S.lib==="sounds"){
+  b=`<div class="card flat"><p>Tap the buttons to hear examples (device voice, France French). Then mimic your tutor's version of each sound.</p></div>
+  ${SOUNDS.map(s=>`<div class="card"><div class="row sb"><h3>${esc(s.k)}</h3><span class="muted small">${esc(s.sp)}</span></div><div class="row">${s.ex.map(e=>`<button class="btn alt sm" data-say="${esc(e)}">▶ ${esc(e)}</button>`).join("")}</div><p>${esc(s.tip)}</p></div>`).join("")}
+  <div class="card"><h3>Minimal pairs</h3><p class="small muted">Tap a pair: you'll hear both. Can you hear the difference? Then say them.</p><div class="row">${PAIRS.map(p=>`<button class="btn alt sm" data-pair="${esc(p[0])}|${esc(p[1])}">${esc(p[0])} / ${esc(p[1])}</button>`).join("")}</div></div>`;
+ }
+ if(S.lib==="bridge"){
+  b=`<div class="card"><p>Your Kreyòl is an asset. Use these links; watch the right-hand column for traps.</p><table><tr><th>Kreyòl</th><th>French</th></tr>${BRIDGE.map(r=>`<tr><td>${esc(r[0])}</td><td><div class="row"><b class="grow">${esc(r[1])}</b>${sp(r[1].replace(/\(.*?\)/g,"").replace(/\s+/g," ").trim())}</div><div class="muted small">${esc(r[2])}</div></td></tr>`).join("")}</table></div>`;
+ }
+ if(S.lib==="global"){
+  b=`<div class="card flat"><h3>French around the world</h3><p>Eleven lesson-linked comparisons. African examples rotate across regions; not every expression is unique to its country. Listen to the French examples and compare the Kreyòl bridge.</p></div>${GLOBAL_FRENCH.map((_,i)=>globalFrenchCard(i+1)).join("")}`;
+ }
+ if(S.lib==="dialogues"){
+  if(S.dlg===null){
+   b=`<div class="card flat"><p>Method: listen with the text hidden, then with text, then shadow each line aloud.</p></div>${DIALOGUES.map((d,i)=>`<button class="opt" data-act="opendlg" data-arg="${i}"><b>Week ${d.w}: ${esc(d.t)}</b></button>`).join("")}`;
+  }else{
+   const d=DIALOGUES[S.dlg];
+   b=`<button class="btn alt sm" data-act="closedlg">← All dialogues</button><div class="card" style="margin-top:12px"><h3>${esc(d.t)}</h3>
+   <div class="row"><button class="btn good sm" data-act="playall" data-arg="${S.dlg}">▶ Play all</button><label class="ck"><input type="checkbox" data-act="hidefr" ${S.hideFr?"checked":""}> Hide French</label><label class="ck"><input type="checkbox" data-act="showen" ${S.showEn?"checked":""}> Show English</label></div>
+   ${d.lines.map(l=>`<div class="line">${sps(l[1],l[0])}<div class="who">${esc(d.who[l[0]])}</div><div class="grow"><div ${S.hideFr?'style="filter:blur(7px)"':""}><b>${esc(l[1])}</b></div>${S.showEn?`<div class="muted small">${esc(l[2])}</div>`:""}</div></div>`).join("")}</div>`;
+  }
+ }
+ if(S.lib==="street"){
+  b=STREET.map(s=>`<div class="card"><h3>${esc(s.h)}</h3><p class="muted small">${esc(s.note)}</p>${s.items.map(i=>`<div class="ex">${sp(i[0])}<div><b>${esc(i[0])}</b><div>${esc(i[1])}</div><div class="muted small">${esc(i[2])}</div></div></div>`).join("")}</div>`).join("");
+ }
+ if(S.lib==="sources"){
+  b=`<div class="card lead"><h3>Message to send tutors</h3><p class="small">${esc(TUTOR_MSG)}</p><button class="btn sm" data-act="copy">Copy</button></div>
+  <div class="card flat"><p>In-app audio uses your device's French voice, which is a France accent. For West African and Caribbean pronunciation, your accent comes from the tutors and sources below.</p></div>
+  ${SOURCES.map(s=>`<div class="card"><div class="row sb"><h4>${esc(s.n)}</h4><span class="kr">${esc(s.tag)}</span></div><p>${esc(s.d)}</p>${s.u?`<a href="${s.u}" target="_blank" rel="noopener noreferrer">Open site</a>`:""}</div>`).join("")}`;
+ }
+ if(S.lib==="mile"){
+  const n=CANDO.filter((_,i)=>S.cando[i]).length;
+  b=`<div class="card"><div class="row sb"><h3>Can-do checklist</h3><span class="muted small">${n} of ${CANDO.length}</span></div><div class="bar"><i style="width:${Math.round(n/CANDO.length*100)}%"></i></div>
+   ${CANDO.map((c,i)=>`<label class="ck"><input type="checkbox" data-act="cando" data-arg="${i}" ${S.cando[i]?"checked":""}> <span>${esc(c)}</span></label>`).join("")}</div>
+   <div class="card flat"><p>Tick an item only when you've done it in a real or recorded conversation, not when you've just read about it.</p></div>`;
+ }
+ return`<div class="chips" role="group">${subs.map(x=>`<button class="chip" aria-pressed="${S.lib===x[0]}" data-act="lib" data-arg="${x[0]}">${x[1]}</button>`).join("")}</div>${b}`;
+}
+
+/* ------------------------- MY CLIPS (IndexedDB) --------------------- */
+// Audio files you add stay in this browser only. Nothing is uploaded.
+let CLIPS=[];
+const idb={
+ db:null,
+ open(){return new Promise((res,rej)=>{if(this.db)return res(this.db);const r=indexedDB.open("parlons",1);r.onupgradeneeded=()=>r.result.createObjectStore("clips",{keyPath:"id"});r.onsuccess=()=>{this.db=r.result;res(r.result)};r.onerror=()=>rej(r.error)})},
+ async all(){const db=await this.open();return new Promise((res,rej)=>{const q=db.transaction("clips").objectStore("clips").getAll();q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})},
+ async put(c){const db=await this.open();return new Promise((res,rej)=>{const q=db.transaction("clips","readwrite").objectStore("clips").put(c);q.onsuccess=()=>res();q.onerror=()=>rej(q.error)})},
+ async del(id){const db=await this.open();return new Promise((res,rej)=>{const q=db.transaction("clips","readwrite").objectStore("clips").delete(id);q.onsuccess=()=>res();q.onerror=()=>rej(q.error)})}
+};
+const clipStore={
+ async all(){
+  if(HAS_WS){const l=await window.storage.list("parlons:clip:",false);const out=[];
+   for(const k of(l&&l.keys)||[]){try{const r=await window.storage.get(k,false);const c=JSON.parse(r.value);out.push(Object.assign(c,{url:c.data}))}catch(e){}}
+   return out}
+  const all=await idb.all();return all.map(c=>Object.assign({},c,{url:URL.createObjectURL(c.blob)}));
+ },
+ async put(file,meta){
+  const id=Date.now()+"-"+Math.random().toString(36).slice(2,7);
+  if(HAS_WS){
+   if(file.size>3.4e6)throw new Error("big");
+   const data=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsDataURL(file)});
+   await window.storage.set("parlons:clip:"+id,JSON.stringify(Object.assign({id,data},meta)),false);
+  }else await idb.put(Object.assign({id,blob:file},meta));
+ },
+ async del(id){if(HAS_WS)await window.storage.delete("parlons:clip:"+id,false);else await idb.del(id)}
+};
+async function loadClips(){
+ try{CLIPS=await clipStore.all();if(S.tab==="lib"&&S.lib==="lab"&&S.labTab==="clips")render()}
+ catch(e){CLIPS=[]}
+}
+
+/* ------------------------- ACCENT LAB VIEW -------------------------- */
+const accName=id=>(ACCENTS.find(a=>a.id===id)||{n:id}).n;
+const mean=(a,k)=>a.length?a.reduce((s,x)=>s+x[k],0)/a.length:0;
+const accOpts=()=>ACCENTS.map(a=>`<option value="${a.id}">${esc(a.n)}</option>`).join("");
+const num5=(sel=3)=>[1,2,3,4,5].map(n=>`<option ${n===sel?"selected":""}>${n}</option>`).join("");
+const listOpts=a=>a.map(x=>`<option>${esc(x)}</option>`).join("");
+function viewLab(){
+ const L=S.lab,t=S.labTab;
+ const tabs=[["guide","Guide"],["listen","Listening log"],["tutors","Tutor trials"],["say","Sentences"],["clips","My clips"]];
+ let b="";
+ if(t==="guide"){
+  b=`<div class="card lead"><h3>How the lab works</h3><ul class="tight">
+   <li><b>Weeks 1 to 2:</b> listen to at least two clips per accent and log them.</li>
+   <li><b>Week 2:</b> book three trial lessons with different accents and log each under Tutor trials.</li>
+   <li><b>Week 3:</b> keep your top two tutors.</li>
+   <li><b>Week 4 onward:</b> one lesson a week in each of your two accents, and keep standard French (RFI, TV5MONDE) in your listening block so you're understood everywhere.</li></ul>
+   <p class="small muted">These are tendencies, not rules. Accents vary by speaker, region, age and education. Trust your own ears.</p></div>
+   ${ACCENTS.map(a=>`<details class="card"><summary>${esc(a.n)}</summary>
+    <h4>Tendencies to listen for</h4><ul class="tight">${a.feats.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>
+    <h4>Where to hear it</h4><ul class="tight">${a.hear.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>
+    <h4>Search for</h4><ul class="tight">${a.search.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>
+    <p class="small muted">Also try Forvo (Library > Sources) and filter recordings by country.</p></details>`).join("")}`;
+ }
+ if(t==="listen"){
+  const rows=ACCENTS.map(a=>{const e=L.listen.filter(x=>x.acc===a.id);return{a,n:e.length,c:mean(e,"clar"),m:mean(e,"mus"),j:mean(e,"enj")}}).filter(r=>r.n);
+  let best="";
+  if(rows.length>=2){const c=rows.slice().sort((x,y)=>y.c-x.c)[0],j=rows.slice().sort((x,y)=>y.j-x.j)[0];best=`<p>So far: clearest to you is <b>${esc(c.a.n)}</b>, most enjoyed is <b>${esc(j.a.n)}</b>.</p>`}
+  b=`<div class="card"><h3>Log a listening clip</h3>
+   <p class="small muted">Listen to 1 to 2 minutes of one speaker. Replay it once before you rate it.</p>
+   <label class="small muted" for="lab-a">Accent</label><select id="lab-a">${accOpts()}</select>
+   <label class="small muted" for="lab-s">What did you listen to?</label><input type="text" id="lab-s" placeholder="e.g. RFI report from Abidjan">
+   <div class="row"><div class="grow"><label class="small muted" for="lab-c">Clarity</label><select id="lab-c">${num5()}</select></div>
+   <div class="grow"><label class="small muted" for="lab-m">Musicality</label><select id="lab-m">${num5()}</select></div>
+   <div class="grow"><label class="small muted" for="lab-e">Enjoyment</label><select id="lab-e">${num5()}</select></div></div>
+   <label class="small muted" for="lab-r">The r sounded</label><select id="lab-r">${listOpts(LAB_R)}</select>
+   <label class="small muted" for="lab-u">The u in « tu / rue » sounded</label><select id="lab-u">${listOpts(LAB_U)}</select>
+   <label class="small muted" for="lab-p">Pace</label><select id="lab-p">${listOpts(LAB_PACE)}</select>
+   <label class="small muted" for="lab-n">One thing you noticed</label><input type="text" id="lab-n">
+   <p><button class="btn" data-act="addlisten">Save clip</button></p></div>
+  ${rows.length?`<div class="card"><h3>Your comparison</h3><table><tr><th>Accent</th><th>Clips</th><th>Clear</th><th>Music</th><th>Enjoy</th></tr>${rows.map(r=>`<tr><td>${esc(r.a.n)}</td><td>${r.n}</td><td>${r.c.toFixed(1)}</td><td>${r.m.toFixed(1)}</td><td>${r.j.toFixed(1)}</td></tr>`).join("")}</table>${best}</div>`:""}
+  ${L.listen.map((e,i)=>({e,i})).reverse().slice(0,8).map(({e,i})=>`<div class="card flat"><div class="row sb"><b>${esc(accName(e.acc))}</b><button class="btn alt sm" data-act="dellisten" data-arg="${i}">Delete</button></div>
+   <div class="small">${esc(e.d)} · ${esc(e.src||"no source noted")}</div><div class="small">Clarity ${e.clar} · Music ${e.mus} · Enjoy ${e.enj} · r: ${esc(e.r)} · u: ${esc(e.u)} · ${esc(e.pace)}</div>${e.n?`<div class="small muted">${esc(e.n)}</div>`:""}</div>`).join("")}`;
+ }
+ if(t==="tutors"){
+  const items=L.trials.map((x,i)=>({x,i}));
+  const ranked=items.filter(o=>o.x.dec!=="Drop").sort((a,b)=>(b.x.und+b.x.enj+b.x.tea)-(a.x.und+a.x.enj+a.x.tea)).slice(0,2);
+  b=`<div class="card"><h3>Log a trial lesson</h3>
+   <label class="small muted" for="lab-tn">Tutor (first name or nickname)</label><input type="text" id="lab-tn">
+   <label class="small muted" for="lab-ta">Accent</label><select id="lab-ta">${accOpts()}</select>
+   <div class="row"><div class="grow"><label class="small muted" for="lab-tu">I understood them</label><select id="lab-tu">${num5()}</select></div>
+   <div class="grow"><label class="small muted" for="lab-te">I enjoyed their voice</label><select id="lab-te">${num5()}</select></div>
+   <div class="grow"><label class="small muted" for="lab-tt">They taught well</label><select id="lab-tt">${num5()}</select></div></div>
+   <label class="small muted" for="lab-td">Decision</label><select id="lab-td"><option>Keep</option><option>Maybe</option><option>Drop</option></select>
+   <label class="small muted" for="lab-tx">Note</label><input type="text" id="lab-tx">
+   <p><button class="btn" data-act="addtrial">Save trial</button></p></div>
+  ${ranked.length?`<div class="card lead"><h3>Top picks so far</h3>${ranked.map(o=>`<p><b>${esc(o.x.name)}</b> · ${esc(accName(o.x.acc))} · score ${o.x.und+o.x.enj+o.x.tea}/15</p>`).join("")}</div>`:""}
+  ${items.slice().reverse().map(o=>`<div class="card flat"><div class="row sb"><b>${esc(o.x.name)} · ${esc(accName(o.x.acc))}</b><button class="btn alt sm" data-act="deltrial" data-arg="${o.i}">Delete</button></div>
+   <div class="small">${esc(o.x.d)} · understood ${o.x.und} · enjoyed ${o.x.enj} · taught ${o.x.tea} · <b>${esc(o.x.dec)}</b></div>${o.x.n?`<div class="small muted">${esc(o.x.n)}</div>`:""}</div>`).join("")}`;
+ }
+ if(t==="say"){
+  b=`<div class="card lead"><h3>Same sentences, different voices</h3>
+   <p>Ask every trial tutor to read these aloud, then shadow them and record yourself in the Speak tab. The same words make differences in r, u, nasals and rhythm easy to hear. The ▶ button is the device's France-French voice, as a standard reference.</p></div>
+   <div class="card">${LAB_SENT.map(s=>`<div class="ex">${sp(s[0])}<div><b>${esc(s[0])}</b><div class="muted small">Listen for: ${esc(s[1])}</div></div></div>`).join("")}</div>
+   <div class="card flat"><button class="btn" data-act="go" data-arg="speak">Open the recorder</button></div>`;
+ }
+ if(t==="clips"){
+  const groups={};CLIPS.forEach(c=>{const k=c.sent>=0?"s"+c.sent:"other";(groups[k]=groups[k]||[]).push(c)});
+  const keys=Object.keys(groups).sort();
+  b=`<div class="card lead"><h3>Add your own audio</h3>
+   <p class="small">Add recordings you already have for personal study: a tutor reading the Accent Lab sentences, a clip you saved, a voice message. They stay in this browser and are never uploaded.</p>
+   <label class="small muted" for="lab-f">Audio file(s)</label><input type="file" id="lab-f" accept="audio/*" multiple>
+   <label class="small muted" for="lab-ct">Label</label><input type="text" id="lab-ct" placeholder="e.g. Aminata, sentence 2">
+   <label class="small muted" for="lab-ca">Accent</label><select id="lab-ca">${accOpts()}</select>
+   <label class="small muted" for="lab-cs">Which sentence is it? (to compare voices)</label>
+   <select id="lab-cs"><option value="-1">Not one of the sentences</option>${LAB_SENT.map((x,i)=>`<option value="${i}">${esc(x[0])}</option>`).join("")}</select>
+   <p><button class="btn" data-act="addclip">Save clip</button></p></div>
+  ${keys.length?keys.map(k=>{const g=groups[k],head=k==="other"?"Other clips":LAB_SENT[+k.slice(1)][0];
+   return`<div class="card"><div class="row sb"><h4>${esc(head)}</h4>${g.length>1?`<button class="btn good sm" data-act="seq" data-arg="${k}">▶ Play all in turn</button>`:""}</div>
+   ${g.map(c=>`<div style="margin-top:10px"><div class="row sb"><span><b>${esc(c.title||"Clip")}</b> <span class="kr">${esc(accName(c.acc))}</span></span><button class="btn alt sm" data-act="delclip" data-arg="${c.id}">Delete</button></div>
+   <audio controls preload="none" data-grp="${k}" src="${c.url}" style="width:100%;max-width:100%"></audio></div>`).join("")}</div>`}).join(""):`<div class="card flat"><p>No clips yet. Add the same sentence from two or three voices and use Play all in turn to hear the differences back to back.</p></div>`}`;
+ }
+ return`<div class="chips" role="group" aria-label="Accent Lab">${tabs.map(x=>`<button class="chip" aria-pressed="${t===x[0]}" data-act="labtab" data-arg="${x[0]}">${x[1]}</button>`).join("")}</div>${b}`;
+}
+
+/* ------------------------- IMMERSE ---------------------------------- */
+function playSeq(lines,rate){const t=++playToken;let k=0;const next=()=>{if(t!==playToken||k>=lines.length)return;speak(lines[k++],0,()=>setTimeout(next,350),rate)};next()}
+const MIX={on:false,cur:null,n:0,rep:2,slow:false,txt:true,en:false,scope:"now",tok:0};
+function mixPool(){
+ const cw=currentWeek(),ok=w=>MIX.scope==="all"||S.set.unlockAll||w<=cw;
+ const out=SENT_ALL.filter(x=>ok(x.w));
+ READS.forEach(r=>{if(ok(r.w))r.lines.forEach(l=>out.push({w:r.w,fr:l[0],en:l[1]}))});
+ DIALOGUES.forEach(d=>{if(ok(d.w))d.lines.forEach(l=>out.push({w:d.w,fr:l[1],en:l[2]}))});
+ return out;
+}
+function mixHtml(){
+ if(!MIX.cur)return`<p class="muted">Tap Start to begin.</p>`;
+ return`<div class="muted small">${MIX.on?"Playing":"Stopped"} · ${MIX.n} sentences</div>${MIX.txt?`<p class="big" style="font-size:1.5rem">${esc(MIX.cur.fr)}</p>`:`<p class="big" style="font-size:1.5rem">· · ·</p>`}${MIX.en?`<p class="muted">${esc(MIX.cur.en)}</p>`:""}`;
+}
+function updateMix(){const e=$("#mixbox");if(e)e.innerHTML=mixHtml()}
+function mixNext(){
+ if(!MIX.on)return;const tok=MIX.tok,pool=mixPool(),x=pick(pool);
+ MIX.cur=x;MIX.n++;updateMix();if(MIX.n===10)markDaily("listen",true);
+ let r=0;
+ const say=()=>{if(tok!==MIX.tok||!MIX.on)return;speak(x.fr,0,()=>{if(tok!==MIX.tok)return;r++;if(r<MIX.rep)setTimeout(say,1200);else setTimeout(mixNext,1800)},MIX.slow?0.6:undefined)};
+ say();
+}
+function viewImmerse(){
+ const t=S.imTab,cw=currentWeek();
+ const tabs=[["sent","Sentences"],["read","Readings"],["mix","Listening mix"]];
+ const tog=`<div class="row"><label class="ck"><input type="checkbox" data-act="hidefr" ${S.hideFr?"checked":""}> Hide French (listen first)</label><label class="ck"><input type="checkbox" data-act="showen" ${S.showEn?"checked":""}> Show English</label></div>`;
+ const line=(fr,en,who=0)=>`<div class="line">${sps(fr,who)}<div class="grow"><div ${S.hideFr?'style="filter:blur(7px)"':""}><b>${esc(fr)}</b></div>${S.showEn?`<div class="muted small">${esc(en)}</div>`:""}</div></div>`;
+ let b="";
+ if(t==="sent"){
+  const w=S.sentWeek||cw;
+  b=`<div class="chips" role="group" aria-label="Week">${LESSONS.map((_,i)=>`<button class="chip" aria-pressed="${i+1===w}" data-act="sentwk" data-arg="${i+1}">${i+1}</button>`).join("")}</div>
+  <div class="card flat"><p>Week ${w}: ${esc(LESSONS[w-1].t)}. ${SENT[w-1].length} sentences. ▶ is normal speed, ½ is slow. Say each one aloud after the audio.</p>${tog}</div>
+  <div class="card">${SENT[w-1].map(x=>line(x[0],x[1])).join("")}</div>`;
+ }
+ if(t==="read"){
+  if(S.readOpen===null){
+   b=`<div class="card flat"><p>Short texts built from what you've learned. Listen first with the text hidden, then read along, then read it aloud.</p></div>
+   ${READS.map((r,i)=>`<button class="opt" data-act="openread" data-arg="${i}"><b>Week ${r.w}: ${esc(r.t)}</b> ${S.read[i]?'<span class="kr">done</span>':""} ${r.w>cw&&!S.set.unlockAll?'<span class="muted small">(ahead of you)</span>':""}</button>`).join("")}`;
+  }else{
+   const r=READS[S.readOpen];
+   b=`<button class="btn alt sm" data-act="closeread">← All readings</button>
+   <div class="card" style="margin-top:12px"><h3>${esc(r.t)}</h3>
+   <div class="row"><button class="btn good sm" data-act="readall" data-arg="${S.readOpen}">▶ Play all</button><button class="btn alt sm" data-act="readslow" data-arg="${S.readOpen}">½ Play all slowly</button></div>
+   ${tog}${r.lines.map(l=>line(l[0],l[1])).join("")}
+   <label class="ck"><input type="checkbox" data-act="markread" data-arg="${S.readOpen}" ${S.read[S.readOpen]?"checked":""}> I've listened, read, and said this aloud</label></div>`;
+  }
+ }
+ if(t==="mix"){
+  b=`<div class="card lead"><h3>Listening mix</h3><p class="small">Random sentences from your readings, dialogues and sentence bank, played hands-free. Repeats help them stick.</p>
+  <div class="row"><div class="grow"><label class="small muted" for="mx-s">Sentences from</label><select id="mx-s" data-act="mixcfg" data-arg="scope"><option value="now" ${MIX.scope==="now"?"selected":""}>This week and earlier</option><option value="all" ${MIX.scope==="all"?"selected":""}>All weeks</option></select></div>
+  <div class="grow"><label class="small muted" for="mx-r">Repeats</label><select id="mx-r" data-act="mixcfg" data-arg="rep">${[1,2,3].map(n=>`<option ${MIX.rep===n?"selected":""}>${n}</option>`).join("")}</select></div></div>
+  <label class="ck"><input type="checkbox" data-act="mixcfg" data-arg="slow" ${MIX.slow?"checked":""}> Slow speed</label>
+  <label class="ck"><input type="checkbox" data-act="mixcfg" data-arg="txt" ${MIX.txt?"checked":""}> Show French text</label>
+  <label class="ck"><input type="checkbox" data-act="mixcfg" data-arg="en" ${MIX.en?"checked":""}> Show English</label>
+  <div class="row"><button class="btn good" data-act="mixstart">${MIX.on?"Restart":"Start"}</button><button class="btn alt" data-act="mixstop">Stop</button><button class="btn alt" data-act="mixskip">Skip</button></div></div>
+  <div class="card" id="mixbox">${mixHtml()}</div>
+  <p class="small muted">Audio may pause if you lock your phone or switch apps.</p>`;
+ }
+ return`<div class="chips" role="group" aria-label="Immerse">${tabs.map(x=>`<button class="chip" aria-pressed="${t===x[0]}" data-act="imtab" data-arg="${x[0]}">${x[1]}</button>`).join("")}</div>${b}`;
+}
+
+/* ------------------------- RENDER ----------------------------------- */
+const TABS=[["today","Today"],["plan","Plan"],["cards","Cards"],["drills","Drills"],["immerse","Immerse"],["speak","Speak"],["lib","Library"]];
+function render(){
+ if(S.tab!=="immerse"&&MIX.on){MIX.on=false;MIX.tok++;try{speechSynthesis.cancel()}catch(e){}}
+ const views={today:viewToday,plan:viewPlan,cards:viewCards,drills:viewDrills,immerse:viewImmerse,speak:viewSpeak,lib:viewLib};
+ $("#app").innerHTML=`<header class="top"><h1>Parlons</h1><small>French for Kreyòl speakers · week ${currentWeek()} of ${WEEKS}</small></header>
+ <main id="main">${views[S.tab]()}</main>
+ <nav aria-label="Sections">${TABS.map(t=>`<button data-act="tab" data-arg="${t[0]}" ${S.tab===t[0]?'aria-current="page"':""}>${t[1]}</button>`).join("")}</nav>`;
+ const ans=$(".ans");if(ans)ans.focus();
+ if(speakNext){const t=speakNext;speakNext=null;speak(t)}
+}
+
+/* ------------------------- ACTIONS ---------------------------------- */
+const A={
+ tab(a){S.tab=a;window.scrollTo(0,0);render()},
+ go(a){const[t,x]=a.split(":");S.tab=t;if(t==="lib"&&x)S.lib=x;if(t==="plan"&&x)S.week=+x;window.scrollTo(0,0);render()},
+ task(a,el){markDaily(a,el.checked);render()},
+ week(a){S.week=+a;render()},
+ speakwk(a){S.speakWeek=+a;S.tab="speak";render()},
+ start(){startSession()},
+ reveal(){SESS.shown=true;const c=SESS.queue[0].c;if(S.set.mode==="recall")speakNext=c.fr;render()},
+ rate(a){rateCard(+a)},
+ endsess(){SESS=null;render()},
+ dtab(a){S.dTab=a;render()},
+ tense(a,el){D.conj.tense=el.value;D.conj.cur=null;render()},
+ next(){const k=S.dTab;newDrill(k);render()},
+ check(){
+  const k=S.dTab,d=D[k];
+  if(k==="order"){
+   const c=d.cur;if(!c.picked.length)return;
+   const ok=c.picked.length===c.target.length&&c.picked.every((p,i)=>p.t===c.target[i]);
+   d.fb={ok};bump(k,ok);speak(c.fr);render();return;
+  }
+  const inp=$(".ans");if(!inp)return;
+  let answers,say="",en="",r;
+  if(k==="conj"){answers=[d.cur.v.f[d.cur.i]];say=PR[d.cur.i].split(" ")[0]+" "+answers[0]}
+  else if(k==="part"){answers=[d.cur[2]];say=(d.cur[1]==="avoir"?"j'ai ":"je suis ")+answers[0]}
+  else if(k==="dict"){answers=[d.cur.fr];say=d.cur.fr;en=d.cur.en}
+  else{
+   answers=d.cur[2];const a0=answers[0];
+   say=d.cur[1].replace(/___ ?/,m=>/['’]$/.test(a0)?a0:a0+(m.endsWith(" ")?" ":"")).replace(/\s*\(.*?\)\s*/g," ").replace(/\s+/g," ").trim();
+  }
+  if(k==="dict"){
+   const cm=x=>norm(x).replace(/[.,!?;:«»"“”]/g,"").replace(/\s+/g," ").trim(),g=cm(inp.value);if(!g)return;
+   r=g===cm(answers[0])?"ok":(plain(g)===plain(cm(answers[0]))?"mid":"no");
+  }else{r=grade(inp.value,answers);if(r==="empty")return}
+  d.fb={r,ans:answers[0],say,en};bump(k,r!=="no");speak(say);render();
+ },
+ opick(a){const d=D.order;if(d.fb)return;const c=d.cur;c.picked.push(c.pool.splice(+a,1)[0]);render()},
+ oun(a){const d=D.order;if(d.fb)return;const c=d.cur;c.pool.push(c.picked.splice(+a,1)[0]);render()},
+ imtab(a){S.imTab=a;playToken++;render()},
+ sentwk(a){S.tab="immerse";S.imTab="sent";S.sentWeek=+a;window.scrollTo(0,0);render()},
+ openread(a){S.tab="immerse";S.imTab="read";S.readOpen=+a;window.scrollTo(0,0);render()},
+ closeread(){S.readOpen=null;playToken++;render()},
+ readall(a){playSeq(READS[+a].lines.map(l=>l[0]))},
+ readslow(a){playSeq(READS[+a].lines.map(l=>l[0]),0.6)},
+ markread(a,el){S.read[a]=el.checked;save("read");render()},
+ mixcfg(a,el){MIX[a]=el.type==="checkbox"?el.checked:(a==="rep"?+el.value:el.value);updateMix()},
+ mixstart(){MIX.on=true;MIX.tok++;MIX.n=0;try{speechSynthesis.cancel()}catch(e){}mixNext();render()},
+ mixstop(){MIX.on=false;MIX.tok++;try{speechSynthesis.cancel()}catch(e){}updateMix()},
+ mixskip(){if(!MIX.on)return;MIX.tok++;try{speechSynthesis.cancel()}catch(e){}mixNext()},
+ gpick(a){const d=D.gender,ok=d.cur.g===a;d.fb={ok};bump("gender",ok);speak(d.cur.full.replace(/\s*\((m|f)\)/,""));render()},
+ bpick(a){const d=D.bridge,o=d.cur.opts[+a],ok=o===d.cur.q[1];d.fb={ok,pick:o};bump("bridge",ok);render()},
+ lib(a){S.lib=a;S.dlg=null;render()},
+ opendlg(a){S.tab="lib";S.lib="dialogues";S.dlg=+a;window.scrollTo(0,0);render()},
+ closedlg(){S.dlg=null;playToken++;render()},
+ playall(a){playAll(+a)},
+ hidefr(a,el){S.hideFr=el.checked;render()},
+ showen(a,el){S.showEn=el.checked;render()},
+ cando(a,el){S.cando[a]=el.checked;save("cando");render()},
+ copy(){navigator.clipboard&&navigator.clipboard.writeText(TUTOR_MSG).then(()=>toast("Copied"),()=>toast("Select the text and copy it manually"))},
+ rec(){toggleRec()},
+ labtab(a){S.labTab=a;render()},
+ addlisten(){const g=id=>$("#"+id).value;S.lab.listen.push({d:today(),acc:g("lab-a"),src:g("lab-s").trim(),clar:+g("lab-c"),mus:+g("lab-m"),enj:+g("lab-e"),r:g("lab-r"),u:g("lab-u"),pace:g("lab-p"),n:g("lab-n").trim()});save("lab");markDaily("listen",true);toast("Saved");render()},
+ dellisten(a){S.lab.listen.splice(+a,1);save("lab");render()},
+ addtrial(){const g=id=>$("#"+id).value;const name=g("lab-tn").trim();if(!name){toast("Add the tutor's name");return}
+  S.lab.trials.push({d:today(),name,acc:g("lab-ta"),und:+g("lab-tu"),enj:+g("lab-te"),tea:+g("lab-tt"),dec:g("lab-td"),n:g("lab-tx").trim()});save("lab");toast("Saved");render()},
+ deltrial(a){S.lab.trials.splice(+a,1);save("lab");render()},
+ async addclip(){
+  const f=$("#lab-f").files;if(!f||!f.length){toast("Choose an audio file first");return}
+  const title=$("#lab-ct").value.trim(),acc=$("#lab-ca").value,sent=+$("#lab-cs").value;
+  try{
+   for(const file of f){await clipStore.put(file,{title:title||file.name,acc,sent})}
+   await loadClips();toast("Saved on this device");render();
+  }catch(e){toast(e.message==="big"?"File too large for in-app storage (about 3 MB max). Trim it first.":"Couldn't save the file in this browser")}
+ },
+ async delclip(a){try{await clipStore.del(a);await loadClips();render()}catch(e){toast("Couldn't delete")}},
+ seq(a){const els=[...document.querySelectorAll('audio[data-grp="'+a+'"]')];let i=0;els.forEach(e=>e.pause());const go=()=>{if(i>=els.length)return;const el=els[i++];el.currentTime=0;el.onended=go;el.play().catch(()=>toast("Tap play once, then try again"))};go()},
+ log(){
+  const m=+$("#lm").value||0,r=+$("#lr").value,n=$("#ln").value.trim();if(!m)return;
+  S.log.push({d:today(),w:S.speakWeek||currentWeek(),m,r,n});save("log");markDaily("speak",true);toast("Saved");render();
+ },
+ export(){S.expTxt=JSON.stringify({set:S.set,cards:S.cards,daily:S.daily,newToday:S.newToday,cando:S.cando,log:S.log,score:S.score,lab:S.lab,read:S.read});render()},
+ downloadprogress(){const o={app:"Parlons",version:1,exportedAt:new Date().toISOString()};KEYS.forEach(k=>{if(S[k]!==undefined)o[k]=S[k]});const blob=new Blob([JSON.stringify(o,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="parlons-progress-"+today()+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);toast("Progress file ready — save it to Files")},
+ copyexp(){navigator.clipboard&&navigator.clipboard.writeText(S.expTxt).then(()=>toast("Copied"),()=>toast("Select the text and copy it"))},
+ import(){
+  const t=$("#imp").value.trim();if(!t)return;
+  try{const o=JSON.parse(t);KEYS.forEach(k=>{if(o[k]!==undefined){S[k]=o[k];save(k)}});toast("Progress restored");render()}
+  catch(e){toast("That isn't valid backup text")}
+ },
+ reset(){if(!S.rst){S.rst=true;render();return}store.clear().then(()=>location.reload())}
+};
+document.addEventListener("change",async e=>{if(e.target.id!=="progressfile")return;const f=e.target.files&&e.target.files[0];if(!f)return;try{const raw=await f.text();const o=JSON.parse(raw);if(!o||typeof o!=="object"||!KEYS.some(k=>Object.prototype.hasOwnProperty.call(o,k)))throw Error("invalid");KEYS.forEach(k=>{if(o[k]!==undefined){S[k]=o[k];save(k)}});toast("Progress restored from file");render()}catch(err){toast("Could not read this progress file")}});
+document.addEventListener("click",e=>{
+ const s=e.target.closest("[data-say]");if(s){speak(s.dataset.say,+s.dataset.who||0,null,s.dataset.slow?0.6:undefined);return}
+ const p=e.target.closest("[data-pair]");if(p){const[a,b]=p.dataset.pair.split("|");speak(a,0,()=>setTimeout(()=>speak(b,0),400));return}
+ const b=e.target.closest("[data-act]");if(!b||b.tagName==="SELECT"||b.type==="checkbox"||b.tagName==="INPUT")return;
+ const f=A[b.dataset.act];if(f)f(b.dataset.arg,b);
+});
+document.addEventListener("change",e=>{
+ const t=e.target;
+ if(t.dataset.set){const k=t.dataset.set;let v=t.type==="checkbox"?t.checked:t.value;if(k==="perDay"||k==="rate")v=+v;S.set[k]=v;save("set");render();return}
+ if(t.dataset.act&&A[t.dataset.act])A[t.dataset.act](t.dataset.arg,t);
+});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.classList.contains("ans")){const b=$('[data-act="check"]');if(b)b.click()}});
+store.init().then(()=>{
+ S.set=Object.assign(S.set,store.get("set",{}));
+ ["cards","daily","newToday","cando","log","score","lab","read"].forEach(k=>{S[k]=store.get(k,S[k])});
+ if(!("set" in store.cache))save("set");   // lock in your start date on first run
+ render();loadClips();
+});
+</script>
+</body>
+</html>
